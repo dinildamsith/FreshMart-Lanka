@@ -1,11 +1,11 @@
-import PageBreadcrumb from "../../components/common/PageBreadCrumb";
-import PageMeta from "../../components/common/PageMeta";
-import ComponentCard from "../../components/common/ComponentCard.tsx";
-import Label from "../../components/form/Label.tsx";
-import Input from "../../components/form/input/InputField.tsx";
-import DropzoneComponent from "../../components/form/form-elements/DropZone.tsx";
-import Button from "../../components/ui/button/Button.tsx";
-import {FileIcon, PencilIcon} from "../../icons";
+import PageBreadcrumb from "../../../components/common/PageBreadCrumb.tsx";
+import PageMeta from "../../../components/common/PageMeta.tsx";
+import ComponentCard from "../../../components/common/ComponentCard.tsx";
+import Label from "../../../components/form/Label.tsx";
+import Input from "../../../components/form/input/InputField.tsx";
+import DropzoneComponent from "../../../components/form/form-elements/DropZone.tsx";
+import Button from "../../../components/ui/button/Button.tsx";
+import {FileIcon, PencilIcon} from "../../../icons";
 
 export default function ItemForm() {
   return (

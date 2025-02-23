@@ -12,13 +12,14 @@ import Buttons from "./pages/UiElements/Buttons";
 import LineChart from "./pages/Charts/LineChart";
 import BarChart from "./pages/Charts/BarChart";
 import Calendar from "./pages/Calendar";
-import BasicTables from "./pages/Tables/BasicTables";
-import ItemForm from "./pages/Forms/ItemForm.tsx";
+import AlItemsTable from "./pages/Tables/AlItemsTable.tsx";
+import ItemForm from "./pages/Forms/item/ItemForm.tsx";
 import Blank from "./pages/Blank";
 import AppLayout from "./layout/AppLayout";
 import { ScrollToTop } from "./components/common/ScrollToTop";
 import Home from "./pages/Dashboard/Home";
-import CustomerForm from "./pages/Forms/customerForm.tsx";
+import CustomerForm from "./pages/Forms/customer/customerForm.tsx";
+import Warehouse from "./pages/Forms/item/warehouse.tsx";
 
 export default function App() {
   return (
@@ -37,10 +38,11 @@ export default function App() {
 
             {/* Forms */}
             <Route path="/items-manage" element={<ItemForm />} />
+            <Route path="/warehouse" element={<Warehouse />} />
             <Route path="/customers-manage" element={<CustomerForm />} />
 
             {/* Tables */}
-            <Route path="/basic-tables" element={<BasicTables />} />
+            <Route path="/basic-tables" element={<AlItemsTable />} />
 
             {/* Ui Elements */}
             <Route path="/alerts" element={<Alerts />} />
