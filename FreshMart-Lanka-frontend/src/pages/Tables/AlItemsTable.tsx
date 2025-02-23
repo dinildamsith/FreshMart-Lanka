@@ -13,7 +13,7 @@ export default function AlItemsTable() {
       <PageBreadcrumb pageTitle="Basic Tables" />
       <div className="space-y-6">
         <ComponentCard title="Basic Table 1">
-          <AlItemsTable />
+            <AllItemsTable/>
         </ComponentCard>
       </div>
     </>

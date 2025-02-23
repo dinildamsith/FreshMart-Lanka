@@ -20,6 +20,7 @@ import { ScrollToTop } from "./components/common/ScrollToTop";
 import Home from "./pages/Dashboard/Home";
 import CustomerForm from "./pages/Forms/customer/customerForm.tsx";
 import Warehouse from "./pages/Forms/item/warehouse.tsx";
+import AllCustomers from "./pages/Forms/customer/allCustomers.tsx";
 
 export default function App() {
   return (
@@ -40,6 +41,7 @@ export default function App() {
             <Route path="/items-manage" element={<ItemForm />} />
             <Route path="/warehouse" element={<Warehouse />} />
             <Route path="/customers-manage" element={<CustomerForm />} />
+            <Route path="/all-customers" element={<AllCustomers />} />
 
             {/* Tables */}
             <Route path="/basic-tables" element={<AlItemsTable />} />

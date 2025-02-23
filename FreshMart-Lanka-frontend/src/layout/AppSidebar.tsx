@@ -48,6 +48,7 @@ const navItems: NavItem[] = [
     icon: <GroupIcon />,
     subItems: [
       { name: "Customer Manage", path: "/customers-manage", pro: false },
+      { name: "All Customers", path: "/all-customers", pro: false },
     ],
   },
   {
