@@ -26,7 +26,7 @@ export default function ItemForm() {
 
           {/*-------------Right Side----------*/}
         <div className="space-y-6">
-            <ComponentCard title="Item Manage">
+            <ComponentCard title="Detils">
                 <div className="space-y-6">
 
                     {/*-----------------------Input Fields-----------------------*/}
