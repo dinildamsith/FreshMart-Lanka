@@ -6,7 +6,7 @@ import {
   BoxCubeIcon,
   CalenderIcon,
   ChevronDownIcon,
-  GridIcon,
+  GridIcon, GroupIcon,
   HorizontaLDots,
   ListIcon,
   PageIcon,
@@ -42,9 +42,19 @@ const navItems: NavItem[] = [
     path: "/profile",
   },
   {
-    name: "Forms",
+    name: "Items",
     icon: <ListIcon />,
-    subItems: [{ name: "Form Elements", path: "/form-elements", pro: false }],
+    subItems: [
+        { name: "Items Manage", path: "/items-manage", pro: false },
+        { name: "Warehouse", path: "/warehouse", pro: false },
+    ],
+  },
+  {
+    name: "Customers",
+    icon: <GroupIcon />,
+    subItems: [
+      { name: "Customer Manage", path: "/customers-manage", pro: false },
+    ],
   },
   {
     name: "Tables",
