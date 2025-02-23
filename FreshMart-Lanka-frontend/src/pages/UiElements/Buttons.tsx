@@ -32,7 +32,7 @@ export default function Buttons() {
               variant="primary"
               startIcon={<BoxIcon className="size-5" />}
             >
-              Button Text
+              Button Tlext
             </Button>
             <Button
               size="md"

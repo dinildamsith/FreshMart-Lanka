@@ -13,11 +13,12 @@ import LineChart from "./pages/Charts/LineChart";
 import BarChart from "./pages/Charts/BarChart";
 import Calendar from "./pages/Calendar";
 import BasicTables from "./pages/Tables/BasicTables";
-import FormElements from "./pages/Forms/FormElements";
+import ItemForm from "./pages/Forms/ItemForm.tsx";
 import Blank from "./pages/Blank";
 import AppLayout from "./layout/AppLayout";
 import { ScrollToTop } from "./components/common/ScrollToTop";
 import Home from "./pages/Dashboard/Home";
+import CustomerForm from "./pages/Forms/customerForm.tsx";
 
 export default function App() {
   return (
@@ -35,7 +36,8 @@ export default function App() {
             <Route path="/blank" element={<Blank />} />
 
             {/* Forms */}
-            <Route path="/form-elements" element={<FormElements />} />
+            <Route path="/items-manage" element={<ItemForm />} />
+            <Route path="/customers-manage" element={<CustomerForm />} />
 
             {/* Tables */}
             <Route path="/basic-tables" element={<BasicTables />} />
