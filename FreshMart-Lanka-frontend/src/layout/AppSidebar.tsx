@@ -8,8 +8,6 @@ import {
   GridIcon, GroupIcon,
   HorizontaLDots,
   ListIcon,
-  PieChartIcon,
-  PlugInIcon,
   UserCircleIcon,
 } from "../icons";
 import { useSidebar } from "../context/SidebarContext";
@@ -56,11 +54,11 @@ const navItems: NavItem[] = [
     name: "Profile",
     path: "/profile",
   },
-  {
-    icon: <UserCircleIcon />,
-    name: "basic",
-    path: "/basic",
-  },
+  // {
+  //   icon: <UserCircleIcon />,
+  //   name: "basic",
+  //   path: "/basic",
+  // },
   // {
   //   name: "Tables",
   //   icon: <TableIcon />,
@@ -82,14 +80,14 @@ const navItems: NavItem[] = [
 ];
 
 const othersItems: NavItem[] = [
-  {
-    icon: <PieChartIcon />,
-    name: "Charts",
-    subItems: [
-      { name: "Line Chart", path: "/line-chart", pro: false },
-      { name: "Bar Chart", path: "/bar-chart", pro: false },
-    ],
-  },
+  // {
+  //   icon: <PieChartIcon />,
+  //   name: "Charts",
+  //   subItems: [
+  //     { name: "Line Chart", path: "/line-chart", pro: false },
+  //     { name: "Bar Chart", path: "/bar-chart", pro: false },
+  //   ],
+  // },
   {
     icon: <BoxCubeIcon />,
     name: "UI Elements",
@@ -102,14 +100,14 @@ const othersItems: NavItem[] = [
       { name: "Videos", path: "/videos", pro: false },
     ],
   },
-  {
-    icon: <PlugInIcon />,
-    name: "Authentication",
-    subItems: [
-      { name: "Sign In", path: "/signin", pro: false },
-      { name: "Sign Up", path: "/signup", pro: false },
-    ],
-  },
+  // {
+  //   icon: <PlugInIcon />,
+  //   name: "Authentication",
+  //   subItems: [
+  //     { name: "Sign In", path: "/signin", pro: false },
+  //     { name: "Sign Up", path: "/signup", pro: false },
+  //   ],
+  // },
 ];
 
 const AppSidebar: React.FC = () => {
