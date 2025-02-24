@@ -13,7 +13,7 @@ import ToggleSwitch from "../../components/form/form-elements/ToggleSwitch.tsx";
 
 import DropzoneComponent from "../../components/form/form-elements/DropZone.tsx";
 
-export default function CustomerForm() {
+export default function BasicForm() {
   return (
     <div>
       <PageMeta
@@ -31,11 +31,7 @@ export default function CustomerForm() {
         <div className="space-y-6">
           <InputGroup />
           <FileInputExample />
-          <
-
-
-
-              CheckboxComponents />
+          <CheckboxComponents />
           <RadioButtons />
           <ToggleSwitch />
           <DropzoneComponent  title={"d"}/>

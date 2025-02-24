@@ -8,7 +8,7 @@ import ComponentCard from "../../../components/common/ComponentCard.tsx";
 import Label from "../../../components/form/Label.tsx";
 import Input from "../../../components/form/input/InputField.tsx";
 import Button from "../../../components/ui/button/Button.tsx";
-import {FileIcon, PencilIcon} from "../../../icons";
+import {EnvelopeIcon, FileIcon, PencilIcon} from "../../../icons";
 
 export default function CustomerForm() {
   return (
@@ -38,8 +38,18 @@ export default function CustomerForm() {
                         </div>
 
                         <div>
-                            <Label htmlFor="input">Customer Email</Label>
-                            <Input type="email" id="input"/>
+                            <Label> Customer Email</Label>
+                            <div className="relative">
+                                <Input
+                                    placeholder="info@gmail.com"
+                                    type="text"
+                                    className="pl-[62px]"
+                                />
+                                <span
+                                    className="absolute left-0 top-1/2 -translate-y-1/2 border-r border-gray-200 px-3.5 py-3 text-gray-500 dark:border-gray-800 dark:text-gray-400">
+              <EnvelopeIcon className="size-6"/>
+            </span>
+                            </div>
                         </div>
 
                         <div>
