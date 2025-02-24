@@ -13,7 +13,6 @@ import {
   UserCircleIcon,
 } from "../icons";
 import { useSidebar } from "../context/SidebarContext";
-import SidebarWidget from "./SidebarWidget";
 
 type NavItem = {
   name: string;
@@ -49,12 +48,12 @@ const navItems: NavItem[] = [
     icon: <BoxCubeIcon />,
     subItems: [
       { name: "Purchase New Order", path: "/purchase-new-order", pro: false },
-      { name: "All Customers", path: "/all-customers", pro: false },
+      { name: "Order History", path: "/all-customers", pro: false },
     ],
   },
   {
     icon: <UserCircleIcon />,
-    name: "User Profile",
+    name: "Profile",
     path: "/profile",
   },
   {
@@ -389,7 +388,7 @@ const AppSidebar: React.FC = () => {
             </div>
           </div>
         </nav>
-        {isExpanded || isHovered || isMobileOpen ? <SidebarWidget /> : null}
+        {/*{isExpanded || isHovered || isMobileOpen ? <SidebarWidget /> : null}*/}
       </div>
     </aside>
   );
