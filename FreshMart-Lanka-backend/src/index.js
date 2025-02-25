@@ -1,14 +1,12 @@
 const express = require('express');
+const AuthController = require('./controllers/authController');
 const db = require('../src/config/dbConfig');
 
 const app = express();
 const port = 3000;
 
 
-// Basic route
-app.get('/', (req, res) => {
-  res.send("Hello World");
-});
+app.use('/fresh-mart/api/v1', AuthController )
 
 // Start the server
 app.listen(port, () => {
