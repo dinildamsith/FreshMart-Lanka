@@ -17,7 +17,8 @@ const generateToken = (user) => {
 
 //----------- Verify Token ------------
 const verifyToken = (req, res, next) => {
-    const token = req.headers['x-access-token'];
+    const token = req.header("Authorization")?.replace("Bearer ","");
+
     if (!token) {
         return res.status(403).send({message: 'No token provided!'});
     }
