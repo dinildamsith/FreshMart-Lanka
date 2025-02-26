@@ -46,5 +46,34 @@ router.post('/customer/save', verifyToken, verifyRole(['ADMIN','USER']), async (
 });
 
 //--------------Update customer----------------
+router.put('/customer/update/:id', verifyToken, verifyRole(['ADMIN']), async (req, res) => {
+
+    const {customerName, customerEmail, customerAddress, customerBirthDate} = req.body;
+
+    if (!customerName || !customerEmail || !customerAddress || !customerBirthDate) {
+        return res.status(400).json(new ResponseDto("BAD_REQUEST", "All fields are required"));
+    }
+
+    try {
+
+        const customer = await CustomerModel.findById(req.params.id);
+
+        if (!customer){
+            return res.status(404).json(new ResponseDto("NOT_FOUND", "Customer not found"));
+        }
+
+        customer.customerName = customerName;
+        customer.customerEmail = customerEmail;
+        customer.customerAddress = customerAddress;
+        customer.customerBirthDate = customerBirthDate;
+        await customer.save();
+
+        res.status(200).json(new ResponseDto("SUCCESS", "Customer updated successfully"));
+
+    } catch (error) {
+        res.status(500).json(new ResponseDto("INTERNAL_SERVER_ERROR", error.message));
+    }
+
+});
 
 module.exports = router;
