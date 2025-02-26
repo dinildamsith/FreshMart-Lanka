@@ -10,6 +10,16 @@ router.get('/customer', verifyToken, verifyRole(['ADMIN','USER']), async (req, r
     return res.status(200).json({ message: 'Customer work checked' });
 });
 
+//--------------Get all customers----------------
+router.get('/customer/all', verifyToken, verifyRole(['ADMIN','USER']), async (req, res) => {
+    try {
+        const customers = await CustomerModel.find();
+        res.status(200).json(new ResponseDto("SUCCESS", "All customers fetched successfully",customers));
+    } catch (error) {
+        res.status(500).json(new ResponseDto("INTERNAL_SERVER_ERROR", error.message));
+    }
+});
+
 //--------------Save customer----------------
 router.post('/customer/save', verifyToken, verifyRole(['ADMIN','USER']), async (req, res) => {
 
