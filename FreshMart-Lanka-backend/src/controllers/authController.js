@@ -12,7 +12,7 @@ router.post('/auth/signup', async (req, res) => {
      const { firstName, lastName, email, role , password } = req.body;
 
       if (!firstName || !lastName || !email || !password || !role) {
-          return res.status(400).json({ message: 'All fields are required' });
+          return res.status(400).json(new ResponseDto("BAD_REQUEST", "All fields are required"));
       }
 
 
@@ -37,7 +37,7 @@ router.post('/auth/signup', async (req, res) => {
 
 
       } catch (error) {
-        res.status(500).json({ message: 'An error occurred' });
+        res.status(500).json(new ResponseDto("INTERNAL_SERVER_ERROR", error.message));
       }
 
 });
@@ -48,7 +48,7 @@ router.post('/auth/signin', async (req, res) => {
     const { email, password } = req.body;
 
     if (!email || !password) {
-        return res.status(400).json({ message: 'All fields are required' });
+        return res.status(400).json(new ResponseDto("BAD_REQUEST", "All fields are required"));
     }
 
     try {
@@ -66,7 +66,7 @@ router.post('/auth/signin', async (req, res) => {
         res.status(200).json(new ResponseDto("SUCCESS", "User logged in successfully", { token: token }));
 
     } catch (error) {
-        res.status(500).json({ message: 'An error occurred' });
+        res.status(500).json(new ResponseDto("INTERNAL_SERVER_ERROR", error.message));
     }
 });
 
