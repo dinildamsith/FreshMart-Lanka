@@ -8,9 +8,9 @@ const router = express.Router();
 
 // --------------- SIGNUP ----------------
 router.post('/auth/signup', async (req, res) => {
-     const { firstName, lastName, email, password } = req.body;
+     const { firstName, lastName, email, role , password } = req.body;
 
-      if (!firstName || !lastName || !email || !password) {
+      if (!firstName || !lastName || !email || !password || !role) {
           return res.status(400).json({ message: 'All fields are required' });
       }
 
@@ -22,18 +22,18 @@ router.post('/auth/signup', async (req, res) => {
 
        if (existingUser) {
           return res.status(400).json(new ResponseDto("BAD_REQUEST", "User already exists"));
-       } else {
+       }
 
         const newUser = new UserModel();
         newUser.firstName = firstName;
         newUser.lastName = lastName;
         newUser.email = email;
+        newUser.role = role;
         newUser.password = await bcrypt.hash(password, 10);
         await newUser.save();
 
         res.status(201).json(new ResponseDto("SUCCESS", "User created successfully"));
 
-       }
 
       } catch (error) {
         res.status(500).json({ message: 'An error occurred' });
