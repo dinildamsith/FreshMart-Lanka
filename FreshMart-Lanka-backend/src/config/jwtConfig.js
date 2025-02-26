@@ -22,13 +22,23 @@ const verifyToken = (req, res, next) => {
     if (!token) {
         return res.status(403).send({message: 'No token provided!'});
     }
-    jwt.verify(token, process.env.SECRET_KEY, (err, decoded) => {
+    jwt.verify(token, process.env.SECRET_KEY, (err, decoded_user) => {
         if (err) {
             return res.status(401).send({message: 'Unauthorized!'});
         }
-        req.user = decoded.user;
+
+        req.user = decoded_user;
         next();
     });
 }
 
-module.exports = {generateToken, verifyToken};
+
+//-------------------- Role-based access control middleware
+const verifyRole = (roles) => (req, res, next) => {
+    if (!roles.includes(req.user.role)) {
+        return res.status(403).json({ message: 'Access denied!' });
+    }
+    next();
+};
+
+module.exports = {generateToken, verifyToken, verifyRole};

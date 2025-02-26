@@ -1,11 +1,11 @@
 const express =  require("express")
 const CustomerModel = require('../models/customerModel');
-const {verifyToken} = require("../config/jwtConfig");
+const {verifyToken, verifyRole} = require("../config/jwtConfig");
 
 const router = express.Router();
 
 //------------- Customer work checked
-router.get('/customer', verifyToken, async (req, res) => {
+router.get('/customer', verifyToken, verifyRole(['ADMIN','USER']), async (req, res) => {
     return res.status(200).json({ message: 'Customer work checked' });
 });
 
