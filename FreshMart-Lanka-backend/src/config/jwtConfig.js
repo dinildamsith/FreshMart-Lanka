@@ -2,12 +2,20 @@ const  jwt = require('jsonwebtoken');
 
 
 
-const SECRET_KEY = "k90djjsnkldawbjdadkiadawdadwlknawdnnadwad"
-
+//----------- Generate Token ------------
 const generateToken = (user) => {
-    return jwt.sign({user}, SECRET_KEY, {expiresIn: '24h'});
+    const payload = {
+        id: user._id,
+        firstName: user.firstName,
+        lastName: user.lastName,
+        email: user.email,
+        role: user.role
+    }
+    return jwt.sign(payload, process.env.SECRET_KEY , {expiresIn: '24h'});
 }
 
+
+//----------- Verify Token ------------
 const verifyToken = (req, res, next) => {
     const token = req.headers['x-access-token'];
     if (!token) {
