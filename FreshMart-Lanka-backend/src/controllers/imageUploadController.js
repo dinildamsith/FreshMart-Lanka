@@ -30,8 +30,7 @@ router.post("/image/upload", upload.single("image"), (req, res) => {
     }
 
     const fileURL = `${req.protocol}://${req.get("host")}/fresh-mart/api/v1/uploads/${req.file.filename}`;
-    const filePath = fileURL; // Access the uploaded file's path
-    res.json({ message: "Image uploaded successfully!", filePath });
+    res.json({ message: "Image uploaded successfully!", fileURL });
 });
 
 // GET route to fetch an image by filename
