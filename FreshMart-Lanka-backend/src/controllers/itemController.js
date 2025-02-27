@@ -53,6 +53,36 @@ router.post('/item/save', verifyToken, verifyRole(['ADMIN']), async (req, res) =
 
 });
 
+//--------------Update item----------------
+router.put('/item/update/:code', verifyToken, verifyRole(['ADMIN']), async (req, res) => {
+    const {itemImageUrl, itemDescription , itemPrice, itemQuantity} = req.body;
+
+    if (!itemImageUrl || !itemDescription || !itemPrice || !itemQuantity) {
+        return res.status(400).json(new ResponseDto("BAD_REQUEST", "All fields are required"));
+    }
+
+    try {
+        const itemCode = req.params.code;
+        const item = await ItemModel.findOne({itemCode: itemCode});
+
+        if (!item){
+            return res.status(404).json(new ResponseDto("NOT_FOUND", "Item not found"));
+        }
+
+        item.itemImageUrl = itemImageUrl;
+        item.itemDescription = itemDescription;
+        item.itemPrice = itemPrice;
+        item.itemQuantity = itemQuantity;
+        await item.save();
+
+        res.status(200).json(new ResponseDto("SUCCESS", "Item updated successfully"));
+
+    } catch (error) {
+        res.status(500).json(new ResponseDto("INTERNAL_SERVER_ERROR", error.message));
+    }
+
+});
+
 
 //-------------- Item Code Generation ----------------
 async function generateUniqueCode() {
