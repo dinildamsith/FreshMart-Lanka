@@ -29,7 +29,7 @@ router.post('/item/save', verifyToken, verifyRole(['ADMIN']), async (req, res) =
     try {
 
         const newItemCode = await generateUniqueCode();
-
+        console.log(newItemCode)
         //------- Check if item already exists
         const existingItem = await ItemModel.findOne({itemCode: newItemCode});
 
@@ -108,8 +108,9 @@ async function generateUniqueCode() {
 
     const lastItemRecord = await ItemModel.find().sort({x: 1});
 
-    console.log(lastItemRecord[0].itemCode);
-    if (lastItemRecord[0].itemCode == null) {
+
+    console.log(lastItemRecord);
+    if (lastItemRecord.length === 0) {
         return "ITEM-000000001";
     } else {
         const lastItemCode = lastItemRecord[0].itemCode;
