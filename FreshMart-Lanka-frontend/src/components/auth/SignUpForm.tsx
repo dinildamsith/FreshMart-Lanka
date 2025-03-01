@@ -5,13 +5,16 @@ import Label from "../form/Label";
 import Input from "../form/input/InputField";
 import Checkbox from "../form/input/Checkbox";
 import Select from "../form/Select.tsx";
+import {signUp} from "../../services/auth/authServices.ts";
+import toast from "react-hot-toast";
 
 
 
 export default function SignUpForm() {
 
-  const [showPassword, setShowPassword] = useState(false);
-  const [isChecked, setIsChecked] = useState(false);
+    const [showPassword, setShowPassword] = useState(false);
+    const [isChecked, setIsChecked] = useState(false);
+    const [loading, setLoading] = useState(false)
 
     const [firstName, setFirstName] = useState<string>("");
     const [lastName, setLastName] = useState<string>("");
@@ -19,13 +22,58 @@ export default function SignUpForm() {
     const [password, setPassword] = useState<string>("");
     const [role, setRole] = useState<string>("");
 
+    const [error , setError] = useState({
+      firstNameInput: false,
+      lastNameInput: false,
+      emailInput: false,
+      passwordInput: false,
+      roleSelector: false
+    })
 
-    // const signUpHandel = async () => {
-    //   await signUp({})
-    // }
+
+  //--------------------------Sing up Handel
+    const signUpData = {
+      firstName,
+      lastName,
+      email,
+      role,
+      password
+    }
+
+    const signUpHandel = async () => {
+
+      console.log(!firstName)
+      console.log(!!firstName)
+      if (!firstName || !lastName || !email || !password || !role) {
+        setError({
+          firstNameInput: !firstName,
+          lastNameInput: !lastName,
+          emailInput: !email,
+          passwordInput: !password,
+          roleSelector: !role
+        });
+
+        toast.error("Please fill in all required fields.");
+        return; // Stop the function if validation fails
+      } else {
+        setLoading(true)
+        const res = await signUp(signUpData)
+        if (!!res) {
+          setLoading(false)
+        }
+      }
+
+    }
 
   return (
     <div className="flex flex-col flex-1 w-full overflow-y-auto lg:w-1/2 no-scrollbar">
+
+      {loading && (
+          <div className="fixed top-0 left-0 w-screen h-screen flex items-center justify-center z-[9999] bg-opacity-50 bg-gray-200">
+            <div className="w-10 h-10 border-4 border-gray-200 border-t-[#3bd7f7] rounded-full animate-spin"></div>
+          </div>
+      )}
+
       <div className="w-full max-w-md mx-auto mb-5 sm:pt-10">
       </div>
       <div className="flex flex-col justify-center flex-1 w-full max-w-md mx-auto">
@@ -51,6 +99,7 @@ export default function SignUpForm() {
                         type="text"
                         id="fname"
                         name="fname"
+                        error={error.firstNameInput}
                         placeholder="Enter your first name"
                         onChange={(e) => setFirstName(e.target.value)}
                     />
@@ -64,6 +113,7 @@ export default function SignUpForm() {
                         type="text"
                         id="lname"
                         name="lname"
+                        error={error.lastNameInput}
                         placeholder="Enter your last name"
                         onChange={(e) => setLastName(e.target.value)}
                     />
@@ -78,12 +128,16 @@ export default function SignUpForm() {
                       type="email"
                       id="email"
                       name="email"
+                      error={error.emailInput}
                       placeholder="Enter your email"
                       onChange={(e) => setEmail(e.target.value)}
                   />
                 </div>
                 <div>
-                  <Label>Select Role</Label>
+                  <Label>
+                    Select Role
+                    <span className="text-error-500">*</span>
+                  </Label>
                   <Select
                       options={[
                         { value: "ADMIN", label: "Admin" },
@@ -106,6 +160,7 @@ export default function SignUpForm() {
                         type={showPassword ? "text" : "password"}
                         id="password"
                         name="password"
+                        error={error.passwordInput}
                         onChange={(e) => setPassword(e.target.value)}
                     />
                     <span
@@ -141,6 +196,8 @@ export default function SignUpForm() {
                 {/* <!-- Button --> */}
                 <div>
                   <button
+                      type={"button"}
+                      onClick={() => signUpHandel()}
                       className="flex items-center justify-center w-full px-4 py-3 text-sm font-medium text-white transition rounded-lg bg-brand-500 shadow-theme-xs hover:bg-brand-600">
                     Sign Up
                   </button>

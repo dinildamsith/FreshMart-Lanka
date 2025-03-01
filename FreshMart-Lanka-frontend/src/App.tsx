@@ -23,10 +23,17 @@ import Warehouse from "./pages/Forms/item/warehouse.tsx";
 import AllCustomers from "./pages/Forms/customer/allCustomers.tsx";
 import PurchaseOrderForm from "./pages/Forms/order/purchaseOrderForm.tsx";
 import BasicForm from "./pages/Forms/basic.tsx";
+import {Toaster} from "react-hot-toast";
 
 export default function App() {
   return (
     <>
+      {/* Add the Toaster component here to ensure it's globally available */}
+      <Toaster
+          position="top-right" // You can adjust the position as per your preference
+          reverseOrder={false}
+      />
+
       <Router>
         <ScrollToTop />
         <Routes>

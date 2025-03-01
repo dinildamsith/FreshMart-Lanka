@@ -3,9 +3,11 @@ import { SIGN_UP_URL } from "../url.ts";
 
 // Define the type for the signup data
 interface SignUpData {
-    username: string;
-    email: string;
-    password: string;
+    firstName: string,
+    lastName:string,
+    email: string,
+    role: string,
+    password: string
 }
 
 export const signUp = (data: SignUpData): Promise<any> => {

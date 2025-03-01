@@ -94,13 +94,14 @@ function handleResponse<T>(response: AxiosResponse<ApiResponse<T>>): ApiResponse
         toast.success(response.data.description || 'Request successful');
         return response.data;
     } else {
-        toast.error(response.data.error || 'Request failed');
-        throw new Error(response.data.error || 'Request failed');
+        toast.error(response.data.description || 'Request failed');
+        console.log(response)
+        throw new Error(response.data.description || 'Request failed');
     }
 }
 
 function handleError(error: any) {
-    const message = error?.response?.data?.error || 'Request failed';
+    const message = error?.response?.data?.description|| 'Request failed';
     toast.error(message);
     throw new Error(message);
 }
