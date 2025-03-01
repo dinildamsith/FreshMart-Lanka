@@ -3,5 +3,9 @@
   "references": [
     { "path": "./tsconfig.app.json" },
     { "path": "./tsconfig.node.json" }
-  ]
+  ],
+  "compilerOptions": {
+    "allowJs": true,     // Allow importing JS files
+    "checkJs": false     // (Optional) Disable type-checking JS files
+  }
 }
