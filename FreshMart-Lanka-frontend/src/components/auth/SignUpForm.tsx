@@ -1,5 +1,5 @@
 import {useState} from "react";
-import { Link } from "react-router";
+import {Link, useNavigate} from "react-router";
 import { EyeCloseIcon, EyeIcon } from "../../icons";
 import Label from "../form/Label";
 import Input from "../form/input/InputField";
@@ -12,6 +12,7 @@ import toast from "react-hot-toast";
 
 export default function SignUpForm() {
 
+    const navigation = useNavigate()
     const [showPassword, setShowPassword] = useState(false);
     const [isChecked, setIsChecked] = useState(false);
     const [loading, setLoading] = useState(false)
@@ -58,9 +59,14 @@ export default function SignUpForm() {
       } else {
         setLoading(true)
         const res = await signUp(signUpData)
-        if (!!res) {
-          setLoading(false)
+
+        if (res.status == 'SUCCESS'){
+            setLoading(false)
+            navigation("/signin")
+        } else {
+            setLoading(false)
         }
+
       }
 
     }
