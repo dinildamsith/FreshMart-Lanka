@@ -6,8 +6,44 @@ import Input from "../../../components/form/input/InputField.tsx";
 import DropzoneComponent from "../../../components/form/form-elements/DropZone.tsx";
 import Button from "../../../components/ui/button/Button.tsx";
 import {FileIcon, PencilIcon} from "../../../icons";
+import {useState} from "react";
+import {saveItem} from "../../../services/item/itemServices.ts";
 
 export default function ItemForm() {
+
+    const [itemImageUrl, setItemImageUrl] = useState<string>("ffff")
+    const [itemDescription, setItemDescription] = useState<string>("")
+    const [itemPrice, setItemPrice] = useState<number>(0)
+    const [itemQuantity, setItemQuntity] = useState<number>(0)
+
+    const [errors, setErrors] = useState({
+        itemDescriptionInput: false,
+        itemPriceInput: false,
+        itemQuantityInput: false
+    })
+
+
+    //------------------ Add item handel
+    const itemData ={
+        itemImageUrl,
+        itemDescription,
+        itemPrice,
+        itemQuantity
+    }
+
+    const handelAddItem = async () => {
+
+        if (!itemDescription || !itemPrice || !itemQuantity) {
+            setErrors({
+                itemDescriptionInput: !itemDescription,
+                itemPriceInput: !itemPrice,
+                itemQuantityInput: !itemQuantity
+            })
+        } else {
+            await saveItem(itemData)
+        }
+    }
+
   return (
     <div>
       <PageMeta
@@ -33,17 +69,26 @@ export default function ItemForm() {
                     <div>
                         <div>
                             <Label htmlFor="input">Item Description</Label>
-                            <Input type="text" id="input"/>
+                            <Input type="text" id="input"
+                                   error={errors.itemDescriptionInput}
+                                   onChange={(e) => setItemDescription(e.target.value)}
+                            />
                         </div>
 
                         <div>
                             <Label htmlFor="input">Item Quantity</Label>
-                            <Input type="number" id="input"/>
+                            <Input type="number" id="input"
+                                   error={errors.itemQuantityInput}
+                                   onChange={(e) => setItemQuntity(Number(e.target.value))}
+                            />
                         </div>
 
                         <div>
                             <Label htmlFor="input">Item Price</Label>
-                            <Input type="number" id="input"/>
+                            <Input type="number" id="input"
+                                   error={errors.itemPriceInput}
+                                   onChange={(e) => setItemPrice(Number(e.target.value))}
+                            />
                         </div>
                     </div>
 
@@ -53,6 +98,7 @@ export default function ItemForm() {
                         <Button
                             size="sm"
                             variant="primary"
+                            onClick={() => handelAddItem()}
                             startIcon={<FileIcon className="size-5"/>}
                         >
                             Save
