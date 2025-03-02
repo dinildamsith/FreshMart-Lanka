@@ -7,3 +7,6 @@ export const SIGN_IN_URL = "/auth/signin"
 export const ADD_ITEM_URL = "/item/save"
 
 
+
+//---------FILES
+export const UPLOAD_IMAGE_URL = "/image/upload"

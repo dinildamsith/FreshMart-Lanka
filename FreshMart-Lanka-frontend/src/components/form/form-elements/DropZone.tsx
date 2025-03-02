@@ -1,6 +1,7 @@
 import ComponentCard from "../../common/ComponentCard";
 import { useDropzone } from "react-dropzone";
 import { useState } from "react";
+import {imageUpload} from "../../../services/fileUpload/upload.ts";
 
 interface DropzoneProps {
   title: string;
@@ -9,12 +10,18 @@ interface DropzoneProps {
 const DropzoneComponent: React.FC<DropzoneProps> = ({ title }) => {
   const [preview, setPreview] = useState<string | null>(null);
 
-  const onDrop = (acceptedFiles: File[]) => {
+  const onDrop = async (acceptedFiles: File[]) => {
     console.log("Files dropped:", acceptedFiles);
 
     // Show preview for the first image
     if (acceptedFiles.length > 0) {
       const file = acceptedFiles[0];
+      const formData = new FormData()
+      formData.set("image", file)
+
+        await imageUpload(formData)
+
+
       const imageUrl = URL.createObjectURL(file);
       setPreview(imageUrl);
     }
