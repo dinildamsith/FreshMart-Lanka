@@ -93,7 +93,7 @@ export default function AllItemsTable(props: any) {
                     <TableRow key={item._id}>
                       <TableCell className="px-5 py-4 sm:px-6">
                         <div className="flex items-center justify-center gap-3">
-                          <div className="w-10 h-10 overflow-hidden rounded-full flex items-center justify-center">
+                          <div className="w-10 h-10 overflow-hidden  flex items-center justify-center">
                             <img
                                 width={40}
                                 height={40}
