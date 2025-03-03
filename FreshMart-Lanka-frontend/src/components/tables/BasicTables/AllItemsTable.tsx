@@ -8,37 +8,25 @@ import {
 
 import Badge from "../../ui/badge/Badge";
 import {PencilIcon, TrashBinIcon} from "../../../icons";
+import {deleteItem} from "../../../services/item/itemServices.ts";
 
-interface Item {
-  id: number;
-  itemImage: string;
-  itemDescription: string;
-  itemQuantity: number;
-  status: string;
-  itemPrice: number;
-}
+// interface Item {
+//   id: number;
+//   itemImage: string;
+//   itemDescription: string;
+//   itemQuantity: number;
+//   status: string;
+//   itemPrice: number;
+// }
 
-// Define the table data using the interface
-export const tableData : Item[] = [
-  {
-    id: 1,
-    itemImage: "/images/user/user-17.jpg",
-    itemDescription: "Lindsey Curtis",
-    itemQuantity: 1,
-    status: "Available",
-    itemPrice: 3.9
-  },
-  {
-    id: 2,
-    itemImage: "/images/user/user-18.jpg",
-    itemDescription: "Kaiya George",
-    itemQuantity: 2,
-    status: "Unavailable",
-    itemPrice: 24.9
-  }
-];
 
 export default function AllItemsTable(props: any) {
+
+
+  const itemDeleteHandel = async (itemCode:any) => {
+     await deleteItem(itemCode)
+  }
+
   return (
       <div className="overflow-hidden rounded-xl border border-gray-200 bg-white dark:border-white/[0.05] dark:bg-white/[0.03]">
         <div className="max-w-full overflow-x-auto">
@@ -140,7 +128,9 @@ export default function AllItemsTable(props: any) {
                           <button className="text-theme-link dark:text-theme-link-dark border border-transparent rounded p-1 hover:border-white ">
                             <PencilIcon className="w-5 h-5" />
                           </button>
-                          <button className="text-theme-link dark:text-theme-link-dark border border-transparent rounded p-1 hover:border-white ">
+                          <button
+                              onClick={() => itemDeleteHandel(item.itemCode)}
+                              className="text-theme-link dark:text-theme-link-dark border border-transparent rounded p-1 hover:border-white ">
                             <TrashBinIcon className="w-5 h-5" />
                           </button>
                         </div>
