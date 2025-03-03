@@ -4,6 +4,7 @@ export const SIGN_IN_URL = "/auth/signin"
 
 
 //---------- ITEMS
+export const GET_ALL_ITEMS = "/item/all"
 export const ADD_ITEM_URL = "/item/save"
 
 

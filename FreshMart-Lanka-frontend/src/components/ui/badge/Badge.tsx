@@ -7,7 +7,8 @@ type BadgeColor =
   | "warning"
   | "info"
   | "light"
-  | "dark";
+  | "dark"
+  | "default"  ;
 
 interface BadgeProps {
   variant?: BadgeVariant; // Light or solid variant
@@ -49,6 +50,7 @@ const Badge: React.FC<BadgeProps> = ({
       info: "bg-blue-light-50 text-blue-light-500 dark:bg-blue-light-500/15 dark:text-blue-light-500",
       light: "bg-gray-100 text-gray-700 dark:bg-white/5 dark:text-white/80",
       dark: "bg-gray-500 text-white dark:bg-white/5 dark:text-white",
+      default: ""
     },
     solid: {
       primary: "bg-brand-500 text-white dark:text-white",
@@ -58,6 +60,7 @@ const Badge: React.FC<BadgeProps> = ({
       info: "bg-blue-light-500 text-white dark:text-white",
       light: "bg-gray-400 dark:bg-white/5 text-white dark:text-white/80",
       dark: "bg-gray-700 text-white dark:text-white",
+      default: ""
     },
   };
 
