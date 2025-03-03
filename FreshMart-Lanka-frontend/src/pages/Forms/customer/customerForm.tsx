@@ -1,16 +1,57 @@
 import PageBreadcrumb from "../../../components/common/PageBreadCrumb.tsx";
-// import DefaultInputs from "../../../components/form/form-elements/DefaultInputs.tsx";
-// import SelectInputs from "../../../components/form/form-elements/SelectInputs.tsx";
-// import TextAreaInput from "../../../components/form/form-elements/TextAreaInput.tsx";
-// import InputStates from "../../../components/form/form-elements/InputStates.tsx";
 import PageMeta from "../../../components/common/PageMeta.tsx";
 import ComponentCard from "../../../components/common/ComponentCard.tsx";
 import Label from "../../../components/form/Label.tsx";
 import Input from "../../../components/form/input/InputField.tsx";
 import Button from "../../../components/ui/button/Button.tsx";
 import {EnvelopeIcon, FileIcon, PencilIcon} from "../../../icons";
+import {useState} from "react";
+import {saveCustomer} from "../../../services/customer/customerServices.ts";
+import toast from "react-hot-toast";
 
 export default function CustomerForm() {
+
+    const [customerName, setCustomerName] = useState<any>()
+    const [customerEmail, setCustomerEmail] = useState<any>()
+    const [customerAddress, setCustomerAddress] = useState<any>()
+    const [customerBirthDate, setCustomerBirthDate] = useState<any>()
+
+    const [errors, setErrors] = useState({
+        nameInput: false,
+        emailInput: false,
+        addressInput: false,
+        bodInput: false
+    })
+
+    const newCustomer = {
+        customerName,
+        customerEmail,
+        customerAddress,
+        customerBirthDate
+    }
+
+    const saveCustomerHandel = async () => {
+
+        if (!customerName || !customerAddress || !customerEmail || ! customerBirthDate) {
+            setErrors({
+                nameInput: !customerName,
+                addressInput: !customerAddress,
+                emailInput: !customerEmail,
+                bodInput: !customerBirthDate
+            })
+            toast.error("Required All Fields")
+        } else {
+            setErrors({
+                nameInput: !customerName,
+                addressInput: !customerAddress,
+                emailInput: !customerEmail,
+                bodInput: !customerBirthDate
+            })
+            await saveCustomer(newCustomer)
+        }
+
+    }
+
   return (
     <div>
       <PageMeta
@@ -29,12 +70,24 @@ export default function CustomerForm() {
                     <div>
                         <div>
                             <Label htmlFor="input">Customer Name</Label>
-                            <Input type="text" id="input"/>
+                            <Input
+                                type="text"
+                                id="input"
+                                value={customerName}
+                                error={errors.nameInput}
+                                onChange={(e) => setCustomerName(e.target.value)}
+                            />
                         </div>
 
                         <div>
                             <Label htmlFor="input">Customer Address</Label>
-                            <Input type="text" id="input"/>
+                            <Input
+                                type="text"
+                                id="input"
+                                value={customerAddress}
+                                error={errors.addressInput}
+                                onChange={(e) => setCustomerAddress(e.target.value)}
+                            />
                         </div>
 
                         <div>
@@ -44,6 +97,9 @@ export default function CustomerForm() {
                                     placeholder="info@gmail.com"
                                     type="text"
                                     className="pl-[62px]"
+                                    value={customerEmail}
+                                    error={errors.emailInput}
+                                    onChange={(e) => setCustomerEmail(e.target.value)}
                                 />
                                 <span
                                     className="absolute left-0 top-1/2 -translate-y-1/2 border-r border-gray-200 px-3.5 py-3 text-gray-500 dark:border-gray-800 dark:text-gray-400">
@@ -54,7 +110,13 @@ export default function CustomerForm() {
 
                         <div>
                             <Label htmlFor="input">Customer Birthday</Label>
-                            <Input type="date" id="input"/>
+                            <Input
+                                type="date"
+                                id="input"
+                                error={errors.bodInput}
+                                value={customerBirthDate}
+                                onChange={(e) => setCustomerBirthDate(e.target.value)}
+                            />
                         </div>
                     </div>
 
@@ -64,6 +126,7 @@ export default function CustomerForm() {
                         <Button
                             size="sm"
                             variant="primary"
+                            onClick={() => saveCustomerHandel()}
                             startIcon={<FileIcon className="size-5"/>}
                         >
                             Save
