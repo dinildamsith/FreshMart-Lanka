@@ -25,7 +25,7 @@ export const saveItem = (data: ItemData): Promise<any> => {
     })
 }
 
-export const deleteItem = (deleteItemCode: any) => {
+export const deleteItem = (deleteItemCode: any): Promise<any> => {
     return deleteRequest({
         url: DELETE_ITEM_URL + deleteItemCode,
         isAuth: true

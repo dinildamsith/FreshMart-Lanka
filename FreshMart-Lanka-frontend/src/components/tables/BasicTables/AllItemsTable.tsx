@@ -9,6 +9,8 @@ import {
 import Badge from "../../ui/badge/Badge";
 import {PencilIcon, TrashBinIcon} from "../../../icons";
 import {deleteItem} from "../../../services/item/itemServices.ts";
+import {useContext} from "react";
+import {MyContext} from "../../../context/AppContext.tsx";
 
 // interface Item {
 //   id: number;
@@ -22,9 +24,17 @@ import {deleteItem} from "../../../services/item/itemServices.ts";
 
 export default function AllItemsTable(props: any) {
 
+  const { setItemDelete } = useContext(MyContext)!; // Access context
 
   const itemDeleteHandel = async (itemCode:any) => {
-     await deleteItem(itemCode)
+     const res = await deleteItem(itemCode)
+
+    if (res.status == 'SUCCESS'){
+      setItemDelete(true)
+    } else {
+      setItemDelete(false)
+    }
+
   }
 
   return (

@@ -2,12 +2,14 @@ import PageMeta from "../../../components/common/PageMeta.tsx";
 import PageBreadcrumb from "../../../components/common/PageBreadCrumb.tsx";
 import ComponentCard from "../../../components/common/ComponentCard.tsx";
 import AllItemsTable from "../../../components/tables/BasicTables/AllItemsTable.tsx";
-import {useEffect, useState} from "react";
+import {useContext, useEffect, useState} from "react";
 import {getAllItems} from "../../../services/item/itemServices.ts";
+import {MyContext} from "../../../context/AppContext.tsx";
 
 
 export default function Warehouse() {
 
+    const { itemDelete } = useContext(MyContext)!;
     const [allItems, setAllItems] = useState([])
 
     const getAllItemsHandel = async () => {
@@ -16,9 +18,15 @@ export default function Warehouse() {
         setAllItems(res.data)
     }
 
+    //----------page trigger time all item get function work
     useEffect(() => {
         getAllItemsHandel()
     }, []);
+
+    //----------item delete after all item get function work
+    useEffect(() => {
+        getAllItemsHandel()
+    }, [itemDelete]);
 
 
     return (
