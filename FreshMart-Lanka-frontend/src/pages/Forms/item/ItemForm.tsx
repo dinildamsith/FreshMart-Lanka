@@ -6,15 +6,20 @@ import Input from "../../../components/form/input/InputField.tsx";
 import DropzoneComponent from "../../../components/form/form-elements/DropZone.tsx";
 import Button from "../../../components/ui/button/Button.tsx";
 import {FileIcon, PencilIcon} from "../../../icons";
-import {useState} from "react";
+
 import {saveItem} from "../../../services/item/itemServices.ts";
+import {useContext, useState} from "react";
+import {MyContext} from "../../../context/AppContext.tsx";
+import toast from "react-hot-toast";
+
 
 export default function ItemForm() {
 
-    const [itemImageUrl, setItemImageUrl] = useState<string>("ffff")
+    const { imageUrl } = useContext(MyContext)!;
     const [itemDescription, setItemDescription] = useState<string>("")
     const [itemPrice, setItemPrice] = useState<number>(0)
     const [itemQuantity, setItemQuntity] = useState<number>(0)
+
 
     const [errors, setErrors] = useState({
         itemDescriptionInput: false,
@@ -23,9 +28,10 @@ export default function ItemForm() {
     })
 
 
+
     //------------------ Add item handel
     const itemData ={
-        itemImageUrl,
+        itemImageUrl: imageUrl,
         itemDescription,
         itemPrice,
         itemQuantity
@@ -33,15 +39,20 @@ export default function ItemForm() {
 
     const handelAddItem = async () => {
 
-        if (!itemDescription || !itemPrice || !itemQuantity) {
-            setErrors({
-                itemDescriptionInput: !itemDescription,
-                itemPriceInput: !itemPrice,
-                itemQuantityInput: !itemQuantity
-            })
+        if (imageUrl != null) {
+            if (!itemDescription || !itemPrice || !itemQuantity ) {
+                setErrors({
+                    itemDescriptionInput: !itemDescription,
+                    itemPriceInput: !itemPrice,
+                    itemQuantityInput: !itemQuantity
+                })
+            } else {
+                await saveItem(itemData)
+            }
         } else {
-            await saveItem(itemData)
+            toast.error("Please Upload Image")
         }
+
     }
 
   return (

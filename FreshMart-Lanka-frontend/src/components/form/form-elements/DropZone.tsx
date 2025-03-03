@@ -1,13 +1,17 @@
 import ComponentCard from "../../common/ComponentCard";
 import { useDropzone } from "react-dropzone";
-import { useState } from "react";
 import {imageUpload} from "../../../services/fileUpload/upload.ts";
+import {useContext, useState} from "react";
+import {MyContext} from "../../../context/AppContext.tsx";
+
 
 interface DropzoneProps {
   title: string;
 }
 
 const DropzoneComponent: React.FC<DropzoneProps> = ({ title }) => {
+
+  const { setImageUrl } = useContext(MyContext)!; // Access context
   const [preview, setPreview] = useState<string | null>(null);
 
   const onDrop = async (acceptedFiles: File[]) => {
@@ -19,8 +23,8 @@ const DropzoneComponent: React.FC<DropzoneProps> = ({ title }) => {
       const formData = new FormData()
       formData.set("image", file)
 
-        await imageUpload(formData)
-
+      const res =   await imageUpload(formData)
+      setImageUrl(res.fileURL)
 
       const imageUrl = URL.createObjectURL(file);
       setPreview(imageUrl);

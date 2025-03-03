@@ -2,7 +2,7 @@ import {postRequest} from "../httpServices.ts";
 import {ADD_ITEM_URL} from "../url.ts";
 
 export interface ItemData {
-    itemImageUrl: string,
+    itemImageUrl: any,
     itemDescription: string,
     itemPrice: number,
     itemQuantity: number

@@ -1,6 +1,7 @@
 const express =  require('express');
 const ResponseDto = require('../dto/responseDto');
 const ItemModel = require('../models/itemModel');
+const UUID = require("uuid")
 const {verifyToken, verifyRole} = require('../config/jwtConfig');
 
 
@@ -28,7 +29,7 @@ router.post('/item/save', verifyToken, verifyRole(['ADMIN']), async (req, res) =
 
     try {
 
-        const newItemCode = await generateUniqueCode();
+        const newItemCode = UUID.v4();
         console.log(newItemCode)
         //------- Check if item already exists
         const existingItem = await ItemModel.findOne({itemCode: newItemCode});
@@ -101,24 +102,6 @@ router.delete('/item/delete/:code', verifyToken, verifyRole(['ADMIN']), async (r
         res.status(500).json(new ResponseDto("INTERNAL_SERVER_ERROR", error.message));
     }
 });
-
-
-//-------------- Item Code Generation ----------------
-async function generateUniqueCode() {
-
-    const lastItemRecord = await ItemModel.find().sort({x: 1});
-
-
-    console.log(lastItemRecord);
-    if (lastItemRecord.length === 0) {
-        return "ITEM-000000001";
-    } else {
-        const lastItemCode = lastItemRecord[0].itemCode;
-        const lastItemCodeNumber = lastItemCode.split("-")[1];
-        const newCodeNumber = parseInt(lastItemCodeNumber) + 1;
-        return "ITEM-" + newCodeNumber.toString().padStart(9, '0');
-    }
-}
 
 
 module.exports = router;

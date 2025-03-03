@@ -32,6 +32,7 @@ export default function App() {
       <Toaster
           position="top-right" // You can adjust the position as per your preference
           reverseOrder={false}
+          containerStyle={{zIndex: 9999999999}}
       />
 
       <Router>
