@@ -17,6 +17,31 @@ router.get('/item/all', verifyToken, verifyRole(['ADMIN','USER']), async (req, r
     }
 });
 
+//--------------Search item by code----------------
+router.get('/item/search/:itemCode', verifyToken, verifyRole(['ADMIN','USER']), async (req, res) => {
+    const { itemCode } = req.params;
+
+    if (!itemCode) {
+        return res.status(400).json(new ResponseDto("BAD_REQUEST", "Item code is required"));
+    }
+
+    try {
+        // Find item by itemCode
+        const item = await ItemModel.findOne({ itemCode: itemCode });
+
+        if (!item) {
+            return res.status(404).json(new ResponseDto("NOT_FOUND", "Item not found"));
+        }
+
+        res.status(200).json(new ResponseDto("SUCCESS", "Item found", item));
+
+    } catch (error) {
+        res.status(500).json(new ResponseDto("INTERNAL_SERVER_ERROR", error.message));
+    }
+});
+
+
+
 //--------------Save item----------------
 router.post('/item/save', verifyToken, verifyRole(['ADMIN']), async (req, res) => {
     const {itemImageUrl, itemDescription , itemPrice, itemQuantity} = req.body;

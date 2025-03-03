@@ -7,15 +7,17 @@ import DropzoneComponent from "../../../components/form/form-elements/DropZone.t
 import Button from "../../../components/ui/button/Button.tsx";
 import {FileIcon, PencilIcon} from "../../../icons";
 
-import {saveItem} from "../../../services/item/itemServices.ts";
-import {useContext, useState} from "react";
+import {codeByItemGet, saveItem} from "../../../services/item/itemServices.ts";
+import {useContext, useEffect, useState} from "react";
 import {MyContext} from "../../../context/AppContext.tsx";
 import toast from "react-hot-toast";
 
 
 export default function ItemForm() {
 
-    const { imageUrl } = useContext(MyContext)!;
+    const { imageUrl, setImageUrl } = useContext(MyContext)!;
+    const { updateItemCode } = useContext(MyContext)!;
+
     const [itemDescription, setItemDescription] = useState<string>("")
     const [itemPrice, setItemPrice] = useState<number>(0)
     const [itemQuantity, setItemQuntity] = useState<number>(0)
@@ -55,6 +57,36 @@ export default function ItemForm() {
 
     }
 
+    const handelUpdateItem = async () => {
+
+        if (imageUrl != null) {
+            if (!itemDescription || !itemPrice || !itemQuantity ) {
+                setErrors({
+                    itemDescriptionInput: !itemDescription,
+                    itemPriceInput: !itemPrice,
+                    itemQuantityInput: !itemQuantity
+                })
+            } else {
+                await saveItem(itemData)
+            }
+        } else {
+            toast.error("Please Upload Image")
+        }
+
+    }
+
+    const getItem = async () => {
+        const res = await codeByItemGet(updateItemCode)
+        setImageUrl(res.data.itemImageUrl)
+        setItemDescription(res.data.itemDescription)
+        setItemQuntity(res.data.itemQuantity)
+        setItemPrice(res.data.itemPrice)
+    }
+
+    useEffect(() => {
+        getItem()
+    }, [updateItemCode]);
+
   return (
     <div>
       <PageMeta
@@ -81,6 +113,7 @@ export default function ItemForm() {
                         <div>
                             <Label htmlFor="input">Item Description</Label>
                             <Input type="text" id="input"
+                                   value={itemDescription}
                                    error={errors.itemDescriptionInput}
                                    onChange={(e) => setItemDescription(e.target.value)}
                             />
@@ -89,6 +122,7 @@ export default function ItemForm() {
                         <div>
                             <Label htmlFor="input">Item Quantity</Label>
                             <Input type="number" id="input"
+                                   value={itemQuantity}
                                    error={errors.itemQuantityInput}
                                    onChange={(e) => setItemQuntity(Number(e.target.value))}
                             />
@@ -97,6 +131,7 @@ export default function ItemForm() {
                         <div>
                             <Label htmlFor="input">Item Price</Label>
                             <Input type="number" id="input"
+                                   value={itemPrice}
                                    error={errors.itemPriceInput}
                                    onChange={(e) => setItemPrice(Number(e.target.value))}
                             />
@@ -106,21 +141,25 @@ export default function ItemForm() {
 
                     {/*---------------Buttons----------------*/}
                     <div className="flex items-center gap-5">
-                        <Button
-                            size="sm"
-                            variant="primary"
-                            onClick={() => handelAddItem()}
-                            startIcon={<FileIcon className="size-5"/>}
-                        >
-                            Save
-                        </Button>
-                        <Button
-                            size="sm"
-                            variant="warning"
-                            startIcon={<PencilIcon className="size-5"/>}
-                        >
-                            Update
-                        </Button>
+                        {updateItemCode ? (
+                            <Button
+                                size="sm"
+                                variant="warning"
+                                onClick={() => handelUpdateItem()}
+                                startIcon={<PencilIcon className="size-5" />}
+                            >
+                                Update
+                            </Button>
+                        ) : (
+                            <Button
+                                size="sm"
+                                variant="primary"
+                                onClick={() => handelAddItem()}
+                                startIcon={<FileIcon className="size-5" />}
+                            >
+                                Save
+                            </Button>
+                        )}
                     </div>
 
                     </div>
