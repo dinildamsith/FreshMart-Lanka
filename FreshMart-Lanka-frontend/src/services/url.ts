@@ -8,6 +8,7 @@ export const GET_ALL_ITEMS = "/item/all"
 export const ADD_ITEM_URL = "/item/save"
 export const DELETE_ITEM_URL = "/item/delete/"
 export const CODE_BY_ITEM_GET_URL ="/item/search/"
+export const UPDATE_ITEM_URL = "/item/update/"
 
 
 

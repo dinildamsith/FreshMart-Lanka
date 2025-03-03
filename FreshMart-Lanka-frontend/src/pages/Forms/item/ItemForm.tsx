@@ -7,20 +7,22 @@ import DropzoneComponent from "../../../components/form/form-elements/DropZone.t
 import Button from "../../../components/ui/button/Button.tsx";
 import {FileIcon, PencilIcon} from "../../../icons";
 
-import {codeByItemGet, saveItem} from "../../../services/item/itemServices.ts";
+import {codeByItemGet, saveItem, updateItem} from "../../../services/item/itemServices.ts";
 import {useContext, useEffect, useState} from "react";
 import {MyContext} from "../../../context/AppContext.tsx";
 import toast from "react-hot-toast";
+import {useNavigate} from "react-router";
 
 
 export default function ItemForm() {
 
+    const navigation = useNavigate()
     const { imageUrl, setImageUrl } = useContext(MyContext)!;
-    const { updateItemCode } = useContext(MyContext)!;
+    const { updateItemCode , setUpdateItemCode } = useContext(MyContext)!;
 
     const [itemDescription, setItemDescription] = useState<string>("")
-    const [itemPrice, setItemPrice] = useState<number>(0)
-    const [itemQuantity, setItemQuntity] = useState<number>(0)
+    const [itemPrice, setItemPrice] = useState<any>(undefined)
+    const [itemQuantity, setItemQuntity] = useState<any>(undefined)
 
 
     const [errors, setErrors] = useState({
@@ -57,6 +59,15 @@ export default function ItemForm() {
 
     }
 
+    const itemUpdateData ={
+        itemCode: updateItemCode,
+        itemImageUrl: imageUrl,
+        itemDescription,
+        itemPrice,
+        itemQuantity
+    }
+
+
     const handelUpdateItem = async () => {
 
         if (imageUrl != null) {
@@ -67,7 +78,17 @@ export default function ItemForm() {
                     itemQuantityInput: !itemQuantity
                 })
             } else {
-                await saveItem(itemData)
+                const res = await updateItem(itemUpdateData)
+
+                if (res.status == 'SUCCESS') {
+                    navigation("/warehouse")
+                    setImageUrl("")
+                    setItemDescription("")
+                    setItemPrice(0)
+                    setItemQuntity(0)
+                    setUpdateItemCode(null)
+                }
+
             }
         } else {
             toast.error("Please Upload Image")
@@ -84,7 +105,12 @@ export default function ItemForm() {
     }
 
     useEffect(() => {
-        getItem()
+
+        if (updateItemCode != null) {
+            getItem()
+        }
+
+
     }, [updateItemCode]);
 
   return (
