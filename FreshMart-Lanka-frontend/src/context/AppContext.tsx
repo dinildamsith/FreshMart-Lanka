@@ -10,6 +10,9 @@ interface AppContextType {
     itemDelete: boolean | null;
     setItemDelete: (status: boolean) => void;
 
+    //------------------ customer Delete state
+    customerDelete: boolean | null;
+    setCustomerDelete: (status: boolean) => void;
 
     //------------------ update item code
     updateItemCode:string | null;
@@ -26,6 +29,7 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
 
     const [imageUrl, setImageUrl] = useState<string | null>(null);
     const [itemDelete, setItemDelete] = useState<boolean | null>(null);
+    const [customerDelete, setCustomerDelete] = useState<boolean | null>(null);
 
     const [updateItemCode, setUpdateItemCode] = useState<string | null>(null);
     const [updateCustomerCode, setUpdateCustomerCode] = useState<string | null>(null);
@@ -37,7 +41,8 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
                 imageUrl, setImageUrl,
                 itemDelete, setItemDelete,
                 updateItemCode, setUpdateItemCode,
-                updateCustomerCode, setUpdateCustomerCode
+                updateCustomerCode, setUpdateCustomerCode,
+                customerDelete, setCustomerDelete
                 // oldItemImage, setOldItemImage,
                 // oldItemDesc, setOldItemDesc,
                 // oldItemPrice, setOldItemPrice,

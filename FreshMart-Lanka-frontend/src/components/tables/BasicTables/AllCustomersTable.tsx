@@ -10,6 +10,7 @@ import {PencilIcon, TrashBinIcon} from "../../../icons";
 import {useContext} from "react";
 import {MyContext} from "../../../context/AppContext.tsx";
 import {useNavigate} from "react-router";
+import {deleteCustomer} from "../../../services/customer/customerServices.ts";
 
 interface Customer {
   id: number;
@@ -27,13 +28,24 @@ type CustomerListProps = {
 export default function AllCustomersTable(props:CustomerListProps) {
 
   const navigation = useNavigate()
-  const { setUpdateCustomerCode } = useContext(MyContext)!;
+  const { setUpdateCustomerCode, setCustomerDelete } = useContext(MyContext)!;
 
 
+  //----------------customer update button handel
   const handelCustomerUpdateButton = (updateCustomerCode:any) => {
     console.log(updateCustomerCode)
     setUpdateCustomerCode(updateCustomerCode)
     navigation("/customers-manage")
+  }
+
+
+  //------------------customer delete button handel
+  const customerDeleteHandel = async (deleteCustomerId:any) => {
+    const res = await deleteCustomer(deleteCustomerId)
+
+    if (res.status == 'SUCCESS') {
+      setCustomerDelete(true)
+    }
   }
 
   return (
@@ -101,7 +113,9 @@ export default function AllCustomersTable(props:CustomerListProps) {
                           className="text-theme-link dark:text-theme-link-dark border border-transparent rounded p-1 hover:border-white ">
                         <PencilIcon className="w-5 h-5" />
                       </button>
-                      <button className="text-theme-link dark:text-theme-link-dark border border-transparent rounded p-1 hover:border-white ">
+                      <button
+                          onClick={ ()=> customerDeleteHandel(customer._id)}
+                          className="text-theme-link dark:text-theme-link-dark border border-transparent rounded p-1 hover:border-white ">
                         <TrashBinIcon className="w-5 h-5" />
                       </button>
                     </div>

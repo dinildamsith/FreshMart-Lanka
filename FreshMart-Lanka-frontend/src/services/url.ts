@@ -15,6 +15,7 @@ export const SAVE_CUSTOMER_URL = "/customer/save"
 export const GET_ALL_CUSTOMERS_URL = "/customer/all"
 export const ID_BY_CUSTOMER_GET_URL = "/customer/search/"
 export const UPDATE_CUSTOMER_URL = "/customer/update/"
+export const DELETE_CUSTOMER_URL = "/customer/delete/"
 
 //---------FILES
 export const UPLOAD_IMAGE_URL = "/image/upload"

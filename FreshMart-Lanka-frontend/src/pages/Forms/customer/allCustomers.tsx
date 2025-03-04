@@ -3,10 +3,12 @@ import PageBreadcrumb from "../../../components/common/PageBreadCrumb.tsx";
 import ComponentCard from "../../../components/common/ComponentCard.tsx";
 import AllCustomersTable from "../../../components/tables/BasicTables/AllCustomersTable.tsx";
 import {getAllCustomers} from "../../../services/customer/customerServices.ts";
-import {useEffect, useState} from "react";
+import {useContext, useEffect, useState} from "react";
+import {MyContext} from "../../../context/AppContext.tsx";
 
 export default function AllCustomers(){
 
+    const { customerDelete } = useContext(MyContext)!;
     const [allCustomers, setAllCustomers] = useState<any>()
 
     const allCustomerGetHandel = async () => {
@@ -21,6 +23,10 @@ export default function AllCustomers(){
     useEffect(() => {
         allCustomerGetHandel()
     }, []);
+
+    useEffect(() => {
+        allCustomerGetHandel()
+    }, [customerDelete]);
 
     return (
         <>
