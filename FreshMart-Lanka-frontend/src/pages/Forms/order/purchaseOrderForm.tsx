@@ -8,14 +8,27 @@ import { BoxIconLine, EnvelopeIcon } from "../../../icons";
 import Select from "../../../components/form/Select.tsx";
 import OrderSelectItemsTable from "../../../components/tables/BasicTables/OrderSelectItemsTable.tsx";
 import Radio from "../../../components/form/input/Radio.tsx";
-import { useState } from "react";
+import {useEffect, useState} from "react";
+import {getAllCustomers} from "../../../services/customer/customerServices.ts";
 
 export default function PurchaseOrderForm() {
-  const options = [
-    { value: "marketing", label: "Marketing" },
-    { value: "template", label: "Template" },
-    { value: "development", label: "Development" },
-  ];
+  const [allCustomers, setAllCustomers] = useState([]);
+
+  const allCustomerGetHandel = async () => {
+    const res = await getAllCustomers();
+
+    if (res.status === 'SUCCESS') {
+      const formattedCustomers = res.data.map((customer: any) => ({
+        value: customer._id,
+        label: customer.customerName,
+      }));
+      setAllCustomers(formattedCustomers);
+    }
+  };
+
+  useEffect(() => {
+    allCustomerGetHandel()
+  }, []);
 
   const handleSelectChange = (value: string) => {
     console.log("Selected value:", value);
@@ -45,7 +58,7 @@ export default function PurchaseOrderForm() {
                   <div>
                     <Label>Select Customer</Label>
                     <Select
-                      options={options}
+                      options={allCustomers}
                       placeholder="Select Customer"
                       onChange={handleSelectChange}
                       className="dark:bg-dark-900"
@@ -89,7 +102,7 @@ export default function PurchaseOrderForm() {
                   <div>
                     <Label>Select Item</Label>
                     <Select
-                      options={options}
+                      options={allCustomers}
                       placeholder="Select Item"
                       onChange={handleSelectChange}
                       className="dark:bg-dark-900"

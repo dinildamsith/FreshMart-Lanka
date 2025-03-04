@@ -3,13 +3,14 @@ const OrderModel = require('../models/orderModel');
 const CustomerModel = require('../models/customerModel');
 const ItemModel = require('../models/itemModel');
 const ResponseDto = require("../dto/responseDto");
+const { verifyToken, verifyRole } = require('../config/jwtConfig');
 
 const router = express.Router();
 
 
 router.post('/order/purchase', async (req, res) => {
 
-       const { customerId, customerName, orderItems, orderTotal } = req.body;
+       const { customerId, customerName, orderItems } = req.body;
 
        try {
 
@@ -33,13 +34,19 @@ router.post('/order/purchase', async (req, res) => {
                 return res.status(400).send(new ResponseDto(400, "Item quantity is not enough"));
             }
 
-            const item = new ItemModel();
+
+            let total = 0
+            orderItems.forEach(item => {
+                total+=item.itemPrice * item.buyQty
+            });
+
+           
             const newOrder = new OrderModel();
 
             newOrder.customerId = customerId;
             newOrder.customerName = customerName;
             newOrder.orderItems = orderItems;
-            newOrder.orderTotal = orderTotal;
+            newOrder.orderTotal = total;
             newOrder.orderDate = new Date();
             await newOrder.save();
 
@@ -58,5 +65,22 @@ router.post('/order/purchase', async (req, res) => {
                 return res.status(400).send(new ResponseDto(400, "Error"));
        }
 })
+
+
+router.get('/order/all', verifyToken, verifyRole(['ADMIN','USER']) ,async (req, res) => {
+    try {
+        const orders = await OrderModel.find();
+
+        if (orders.length === 0) {
+            return res.status(404).send(new ResponseDto(404, "No orders found"));
+        }
+
+        return res.status(200).send(new ResponseDto(200, "Orders retrieved successfully", orders));
+    } catch (error) {
+        console.log(error);
+        return res.status(500).send(new ResponseDto(500, "Error retrieving orders"));
+    }
+});
+
 
 module.exports = router;
