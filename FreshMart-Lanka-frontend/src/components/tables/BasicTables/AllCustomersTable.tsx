@@ -7,6 +7,9 @@ import {
 } from "../../ui/table";
 
 import {PencilIcon, TrashBinIcon} from "../../../icons";
+import {useContext} from "react";
+import {MyContext} from "../../../context/AppContext.tsx";
+import {useNavigate} from "react-router";
 
 interface Customer {
   id: number;
@@ -23,6 +26,14 @@ type CustomerListProps = {
 
 export default function AllCustomersTable(props:CustomerListProps) {
 
+  const navigation = useNavigate()
+  const { setUpdateCustomerCode } = useContext(MyContext)!;
+
+
+  const handelCustomerUpdateButton = (updateCustomerCode:any) => {
+    setUpdateCustomerCode(updateCustomerCode)
+    navigation("/customers-manage")
+  }
 
   return (
     <div className="overflow-hidden rounded-xl border border-gray-200 bg-white dark:border-white/[0.05] dark:bg-white/[0.03]">
@@ -84,7 +95,9 @@ export default function AllCustomersTable(props:CustomerListProps) {
                   </TableCell>
                   <TableCell className="px-4 py-3 text-gray-500 text-center text-theme-sm dark:text-gray-400">
                     <div className="flex items-center justify-center gap-2">
-                      <button className="text-theme-link dark:text-theme-link-dark border border-transparent rounded p-1 hover:border-white ">
+                      <button
+                          onClick={ ()=> handelCustomerUpdateButton(customer._id)}
+                          className="text-theme-link dark:text-theme-link-dark border border-transparent rounded p-1 hover:border-white ">
                         <PencilIcon className="w-5 h-5" />
                       </button>
                       <button className="text-theme-link dark:text-theme-link-dark border border-transparent rounded p-1 hover:border-white ">

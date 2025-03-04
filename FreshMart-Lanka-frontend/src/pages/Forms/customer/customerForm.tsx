@@ -5,12 +5,14 @@ import Label from "../../../components/form/Label.tsx";
 import Input from "../../../components/form/input/InputField.tsx";
 import Button from "../../../components/ui/button/Button.tsx";
 import {EnvelopeIcon, FileIcon, PencilIcon} from "../../../icons";
-import {useState} from "react";
-import {saveCustomer} from "../../../services/customer/customerServices.ts";
+import {useContext, useEffect, useState} from "react";
+import {idByGetCustomer, saveCustomer} from "../../../services/customer/customerServices.ts";
 import toast from "react-hot-toast";
+import {MyContext} from "../../../context/AppContext.tsx";
 
 export default function CustomerForm() {
 
+    const { updateCustomerCode } = useContext(MyContext)!;
     const [customerName, setCustomerName] = useState<any>()
     const [customerEmail, setCustomerEmail] = useState<any>()
     const [customerAddress, setCustomerAddress] = useState<any>()
@@ -51,6 +53,22 @@ export default function CustomerForm() {
         }
 
     }
+
+    const updateUserGet = async (id:any) => {
+        const res = await idByGetCustomer(id)
+        setCustomerName(res.data.customerName)
+        setCustomerEmail(res.data.customerEmail)
+        setCustomerAddress(res.data.customerAddress)
+        setCustomerBirthDate(new Date(res.data.customerBirthDate).toISOString().split('T')[0])
+    }
+
+    useEffect(() => {
+
+        if (updateCustomerCode != null) {
+            updateUserGet(updateCustomerCode)
+        }
+
+    }, [updateCustomerCode]);
 
   return (
     <div>
@@ -123,21 +141,25 @@ export default function CustomerForm() {
 
                     {/*---------------Buttons----------------*/}
                     <div className="flex items-center gap-5">
-                        <Button
-                            size="sm"
-                            variant="primary"
-                            onClick={() => saveCustomerHandel()}
-                            startIcon={<FileIcon className="size-5"/>}
-                        >
-                            Save
-                        </Button>
-                        <Button
-                            size="sm"
-                            variant="warning"
-                            startIcon={<PencilIcon className="size-5"/>}
-                        >
-                            Update
-                        </Button>
+                        {updateCustomerCode ? (
+                            <Button
+                                size="sm"
+                                variant="warning"
+                                startIcon={<PencilIcon className="size-5" />}
+                            >
+                                Update
+                            </Button>
+                        ) : (
+                            <Button
+                                size="sm"
+                                variant="primary"
+                                onClick={() => saveCustomerHandel()}
+                                startIcon={<FileIcon className="size-5" />}
+                            >
+                                Save
+                            </Button>
+                        )}
+
                     </div>
 
                 </div>

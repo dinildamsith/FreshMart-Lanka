@@ -11,21 +11,13 @@ interface AppContextType {
     setItemDelete: (status: boolean) => void;
 
 
-    //------------------ old item details
+    //------------------ update item code
     updateItemCode:string | null;
     setUpdateItemCode: (code: string | null) => void;
-    //
-    // oldItemImage: string | null;
-    // setOldItemImage: (image: string | null) => void;
-    //
-    // oldItemDesc: string | null;
-    // setOldItemDesc: (desc: string | null) => void;
-    //
-    // oldItemPrice: number | 0;
-    // setOldItemPrice: (price: number | 0) => void;
-    //
-    // oldItemQty: number | 0;
-    // setOldItemQty: (qty: number | 0) => void;
+
+    //-----------------update customer code
+    updateCustomerCode:string | null;
+    setUpdateCustomerCode: (code: string | null) => void;
 }
 
 export const MyContext = createContext<AppContextType | undefined>(undefined);
@@ -36,17 +28,16 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
     const [itemDelete, setItemDelete] = useState<boolean | null>(null);
 
     const [updateItemCode, setUpdateItemCode] = useState<string | null>(null);
-    // const [oldItemImage, setOldItemImage] = useState<string | null>(null);
-    // const [oldItemDesc, setOldItemDesc] = useState<string | null>(null);
-    // const [oldItemPrice, setOldItemPrice] = useState<number | 0>(0);
-    // const [oldItemQty, setOldItemQty] = useState<number | 0>(0);
+    const [updateCustomerCode, setUpdateCustomerCode] = useState<string | null>(null);
+
 
     return (
         <MyContext.Provider
             value={{
                 imageUrl, setImageUrl,
                 itemDelete, setItemDelete,
-                updateItemCode, setUpdateItemCode
+                updateItemCode, setUpdateItemCode,
+                updateCustomerCode, setUpdateCustomerCode
                 // oldItemImage, setOldItemImage,
                 // oldItemDesc, setOldItemDesc,
                 // oldItemPrice, setOldItemPrice,

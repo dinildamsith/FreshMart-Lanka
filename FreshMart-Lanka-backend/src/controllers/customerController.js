@@ -55,6 +55,24 @@ router.post('/customer/save', verifyToken, verifyRole(['ADMIN','USER']), async (
 
 });
 
+//--------------Get customer by ID----------------
+router.get('/customer/search/:id', verifyToken, verifyRole(['ADMIN','USER']), async (req, res) => {
+
+    try {
+        const customer = await CustomerModel.findById(req.params.id);
+
+        if (!customer) {
+            return res.status(404).json(new ResponseDto("NOT_FOUND", "Customer not found"));
+        }
+
+        res.status(200).json(new ResponseDto("SUCCESS", "Customer fetched successfully", customer));
+
+    } catch (error) {
+        res.status(500).json(new ResponseDto("INTERNAL_SERVER_ERROR", error.message));
+    }
+
+});
+
 //--------------Update customer----------------
 router.put('/customer/update/:id', verifyToken, verifyRole(['ADMIN']), async (req, res) => {
 
