@@ -31,6 +31,7 @@ export default function AllCustomersTable(props:CustomerListProps) {
 
 
   const handelCustomerUpdateButton = (updateCustomerCode:any) => {
+    console.log(updateCustomerCode)
     setUpdateCustomerCode(updateCustomerCode)
     navigation("/customers-manage")
   }

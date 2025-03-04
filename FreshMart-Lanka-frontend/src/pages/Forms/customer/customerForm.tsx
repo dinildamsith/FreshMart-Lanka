@@ -6,13 +6,15 @@ import Input from "../../../components/form/input/InputField.tsx";
 import Button from "../../../components/ui/button/Button.tsx";
 import {EnvelopeIcon, FileIcon, PencilIcon} from "../../../icons";
 import {useContext, useEffect, useState} from "react";
-import {idByGetCustomer, saveCustomer} from "../../../services/customer/customerServices.ts";
+import {idByGetCustomer, saveCustomer, updateCustomer} from "../../../services/customer/customerServices.ts";
 import toast from "react-hot-toast";
 import {MyContext} from "../../../context/AppContext.tsx";
+import {useNavigate} from "react-router";
 
 export default function CustomerForm() {
 
-    const { updateCustomerCode } = useContext(MyContext)!;
+    const navigation = useNavigate()
+    const { updateCustomerCode, setUpdateCustomerCode } = useContext(MyContext)!;
     const [customerName, setCustomerName] = useState<any>()
     const [customerEmail, setCustomerEmail] = useState<any>()
     const [customerAddress, setCustomerAddress] = useState<any>()
@@ -25,6 +27,7 @@ export default function CustomerForm() {
         bodInput: false
     })
 
+    //--------------------------save new customer
     const newCustomer = {
         customerName,
         customerEmail,
@@ -54,6 +57,7 @@ export default function CustomerForm() {
 
     }
 
+    //------------------------update user get
     const updateUserGet = async (id:any) => {
         const res = await idByGetCustomer(id)
         setCustomerName(res.data.customerName)
@@ -62,6 +66,48 @@ export default function CustomerForm() {
         setCustomerBirthDate(new Date(res.data.customerBirthDate).toISOString().split('T')[0])
     }
 
+
+    //--------------------------customer update handel
+    const updateCustomerData = {
+        customerId: updateCustomerCode,
+        customerName,
+        customerEmail,
+        customerAddress,
+        customerBirthDate
+    }
+
+    const handelCustomerUpdate = async () => {
+
+        if (!customerName || !customerAddress || !customerEmail || ! customerBirthDate) {
+            setErrors({
+                nameInput: !customerName,
+                addressInput: !customerAddress,
+                emailInput: !customerEmail,
+                bodInput: !customerBirthDate
+            })
+            toast.error("Required All Fields")
+        } else {
+            setErrors({
+                nameInput: !customerName,
+                addressInput: !customerAddress,
+                emailInput: !customerEmail,
+                bodInput: !customerBirthDate
+            })
+            const res = await updateCustomer(updateCustomerData)
+
+            if (res.status == 'SUCCESS') {
+                setUpdateCustomerCode(null)
+                setCustomerName("")
+                setCustomerEmail("")
+                setCustomerAddress("")
+                setCustomerBirthDate(null)
+                navigation("/all-customers")
+            }
+        }
+
+    }
+
+    //-------------page load time update customer details get
     useEffect(() => {
 
         if (updateCustomerCode != null) {
@@ -145,6 +191,7 @@ export default function CustomerForm() {
                             <Button
                                 size="sm"
                                 variant="warning"
+                                onClick={()=> handelCustomerUpdate()}
                                 startIcon={<PencilIcon className="size-5" />}
                             >
                                 Update

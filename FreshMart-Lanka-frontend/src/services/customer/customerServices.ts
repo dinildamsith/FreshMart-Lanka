@@ -1,5 +1,5 @@
-import {getRequest, postRequest} from "../httpServices.ts";
-import {GET_ALL_CUSTOMERS_URL, ID_BY_CUSTOMER_GET_URL, SAVE_CUSTOMER_URL} from "../url.ts";
+import {getRequest, postRequest, putRequest} from "../httpServices.ts";
+import {GET_ALL_CUSTOMERS_URL, ID_BY_CUSTOMER_GET_URL, SAVE_CUSTOMER_URL, UPDATE_CUSTOMER_URL} from "../url.ts";
 
 export const saveCustomer = (data: any): Promise<any> => {
     return postRequest({
@@ -20,6 +20,15 @@ export const getAllCustomers = ():Promise<any> => {
 export const idByGetCustomer = (customerId: any):Promise<any> => {
     return getRequest({
         url: ID_BY_CUSTOMER_GET_URL + customerId,
+        isAuth: true
+    })
+}
+
+export const updateCustomer = (data: any): Promise<any> => {
+    return putRequest({
+        url: UPDATE_CUSTOMER_URL + data.customerId,
+        data: data,
+        contentType: "json",
         isAuth: true
     })
 }
