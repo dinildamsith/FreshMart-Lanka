@@ -24,6 +24,7 @@ import AllCustomers from "./pages/Forms/customer/allCustomers.tsx";
 import PurchaseOrderForm from "./pages/Forms/order/purchaseOrderForm.tsx";
 import BasicForm from "./pages/Forms/basic.tsx";
 import {Toaster} from "react-hot-toast";
+import AllOrders from "./pages/Forms/order/allOrders.tsx";
 
 export default function App() {
   return (
@@ -53,6 +54,7 @@ export default function App() {
             <Route path="/customers-manage" element={<CustomerForm />} />
             <Route path="/all-customers" element={<AllCustomers />} />
             <Route path="/purchase-new-order" element={<PurchaseOrderForm />} />
+            <Route path="/all-orders" element={<AllOrders/>} />
 
 
             <Route path="/basic" element={<BasicForm />} />

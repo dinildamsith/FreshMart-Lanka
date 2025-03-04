@@ -46,7 +46,7 @@ const navItems: NavItem[] = [
     icon: <BoxCubeIcon />,
     subItems: [
       { name: "Purchase New Order", path: "/purchase-new-order", pro: false },
-      { name: "Order History", path: "/all-customers", pro: false },
+      { name: "Order History", path: "/all-orders", pro: false },
     ],
   },
   {
