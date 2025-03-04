@@ -17,5 +17,8 @@ export const ID_BY_CUSTOMER_GET_URL = "/customer/search/"
 export const UPDATE_CUSTOMER_URL = "/customer/update/"
 export const DELETE_CUSTOMER_URL = "/customer/delete/"
 
+//---------------ORDERS
+export const ALL_ORDERS_GET_URL = "/order/all"
+
 //---------FILES
 export const UPLOAD_IMAGE_URL = "/image/upload"

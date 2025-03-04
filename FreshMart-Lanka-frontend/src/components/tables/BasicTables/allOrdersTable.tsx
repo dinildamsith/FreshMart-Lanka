@@ -7,19 +7,7 @@ import {
 } from "../../ui/table";
 
 
-
-// Define the table data using the interface
-export const tableData : any = [
-    {
-        idd: 1,
-        itemImage: "Lindsey Curtis",
-        itemDescription: "Lindsey Curtis",
-        itemQuantity: 10,
-        itemUnitPrice: 100
-    }
-];
-
-export default function AllOrdersTable() {
+export default function AllOrdersTable(props:any) {
     return (
         <div className="overflow-hidden rounded-xl border border-gray-200 bg-white dark:border-white/[0.05] dark:bg-white/[0.03]">
             <div className="max-w-full overflow-x-auto">
@@ -64,23 +52,29 @@ export default function AllOrdersTable() {
 
                         {/* Table Body */}
                         <TableBody className="divide-y divide-gray-100 dark:divide-white/[0.05]">
-                            {tableData.map((order:any) => (
+                            {props.allOrders?.map((order:any) => (
                                 <TableRow key={order.id}>
                                     <TableCell className="px-4 py-3 text-center text-gray-500 text-theme-sm dark:text-gray-400">
-                                        {order.itemImage}
+                                        {order._id}
                                     </TableCell>
                                     <TableCell className="px-4 py-3 text-gray-500 text-center text-theme-sm dark:text-gray-400">
-                                        {order.itemDescription}
+                                        {new Date(order.orderDate).toISOString().split('T')[0]}
                                     </TableCell>
                                     <TableCell className="px-4 py-3 text-gray-500 text-center text-theme-sm dark:text-gray-400">
-                                        {order.itemUnitPrice}
+                                        {order.customerName}
                                     </TableCell>
-                                    <TableCell className="px-4 py-3 text-gray-500 text-center text-theme-sm dark:text-gray-400">
-                                        {order.itemQuantity}
+                                    <TableCell className="border px-4 py-3 text-gray-500 text-center text-theme-sm dark:text-gray-400">
+                                        {order.orderItems?.map((item:any) => (
+                                            <>
+                                                <hr/>
+                                                <h1>{item.itemName}</h1>
+                                                <span>Rs: {item.itemPrice}.00</span> X <span>{item.buyQty}</span>
+                                                <hr/>
+                                            </>
+                                        ))}
                                     </TableCell>
-                                    <TableCell className="px-4 py-3 text-gray-500 text-center text-theme-sm dark:text-gray-400">
-                                       <>
-                                       </>
+                                    <TableCell className="border px-4 py-3 text-gray-500 text-center text-theme-sm dark:text-gray-400">
+                                       Rs:  {order.orderTotal}.00
                                     </TableCell>
                                 </TableRow>
                             ))}
