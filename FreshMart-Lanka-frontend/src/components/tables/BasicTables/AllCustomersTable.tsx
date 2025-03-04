@@ -13,28 +13,17 @@ interface Customer {
   customerName: string;
   customerAddress: string;
   customerEmail: string;
-  customerBirthday: string;
+  customerBirthDate: string;
 }
 
-// Define the table data using the interface
-export const tableData : Customer[] = [
-  {
-    id: 1,
-    customerName: "Lindsey Curtis",
-    customerAddress: "Colombo",
-    customerEmail: "d@.com",
-    customerBirthday: "2021-10-10"
-  },
-  {
-    id: 2,
-    customerName: "Kaiya George",
-    customerAddress: "Galle",
-    customerEmail: "d@.com",
-    customerBirthday: "2021-10-10"
-  }
-];
+type CustomerListProps = {
+  allCustomers: Customer[]
+}
 
-export default function AllCustomersTable() {
+
+export default function AllCustomersTable(props:CustomerListProps) {
+
+
   return (
     <div className="overflow-hidden rounded-xl border border-gray-200 bg-white dark:border-white/[0.05] dark:bg-white/[0.03]">
       <div className="max-w-full overflow-x-auto">
@@ -79,19 +68,19 @@ export default function AllCustomersTable() {
 
             {/* Table Body */}
             <TableBody className="divide-y divide-gray-100 dark:divide-white/[0.05]">
-              {tableData.map((order) => (
-                <TableRow key={order.id}>
+              {props.allCustomers?.map((customer:any) => (
+                <TableRow key={customer.id}>
                   <TableCell className="px-4 py-3 text-center text-gray-500 text-theme-sm dark:text-gray-400">
-                    {order.customerName}
+                    {customer.customerName}
                   </TableCell>
                   <TableCell className="px-4 py-3 text-gray-500 text-center text-theme-sm dark:text-gray-400">
-                    {order.customerAddress}
+                    {customer.customerAddress}
                   </TableCell>
                   <TableCell className="px-4 py-3 text-gray-500 text-center text-theme-sm dark:text-gray-400">
-                    {order.customerEmail}
+                    {customer.customerEmail}
                   </TableCell>
                   <TableCell className="px-4 py-3 text-gray-500 text-center text-theme-sm dark:text-gray-400">
-                    {order.customerBirthday}
+                    {new Date(customer.customerBirthDate).toISOString().split('T')[0]}
                   </TableCell>
                   <TableCell className="px-4 py-3 text-gray-500 text-center text-theme-sm dark:text-gray-400">
                     <div className="flex items-center justify-center gap-2">

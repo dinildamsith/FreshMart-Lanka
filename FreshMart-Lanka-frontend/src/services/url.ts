@@ -12,6 +12,7 @@ export const UPDATE_ITEM_URL = "/item/update/"
 
 //-------------CUSTOMERS
 export const SAVE_CUSTOMER_URL = "/customer/save"
+export const GET_ALL_CUSTOMERS_URL = "/customer/all"
 
 //---------FILES
 export const UPLOAD_IMAGE_URL = "/image/upload"
