@@ -12,14 +12,17 @@ import {useEffect, useState} from "react";
 import {getAllCustomers} from "../../../services/customer/customerServices.ts";
 
 export default function PurchaseOrderForm() {
+
+
   const [allCustomers, setAllCustomers] = useState([]);
+  const [selectCustomer, setSelectCustomer] = useState<any>({})
 
   const allCustomerGetHandel = async () => {
     const res = await getAllCustomers();
 
     if (res.status === 'SUCCESS') {
       const formattedCustomers = res.data.map((customer: any) => ({
-        value: customer._id,
+        value: JSON.stringify(customer),
         label: customer.customerName,
       }));
       setAllCustomers(formattedCustomers);
@@ -30,8 +33,9 @@ export default function PurchaseOrderForm() {
     allCustomerGetHandel()
   }, []);
 
-  const handleSelectChange = (value: string) => {
-    console.log("Selected value:", value);
+
+  const selectCustomerHandel = (value: string) => {
+    setSelectCustomer(JSON.parse(value));
   };
 
   const [selectedValue, setSelectedValue] = useState<string>("option2");
@@ -60,19 +64,19 @@ export default function PurchaseOrderForm() {
                     <Select
                       options={allCustomers}
                       placeholder="Select Customer"
-                      onChange={handleSelectChange}
+                      onChange={selectCustomerHandel}
                       className="dark:bg-dark-900"
                     />
                   </div>
 
                   <div>
-                    <Label htmlFor="input">Customer Name</Label>
-                    <Input type="text" id="input" />
+                    <Label htmlFor="input">Customer Code</Label>
+                    <Input type="text" id="input"  value={selectCustomer._id}/>
                   </div>
 
                   <div>
                     <Label htmlFor="input">Customer Address</Label>
-                    <Input type="text" id="input" />
+                    <Input type="text" id="input" value={selectCustomer.customerAddress}/>
                   </div>
 
                   <div>
@@ -82,6 +86,7 @@ export default function PurchaseOrderForm() {
                         placeholder="info@gmail.com"
                         type="text"
                         className="pl-[62px]"
+                        value={selectCustomer.customerEmail}
                       />
                       <span className="absolute left-0 top-1/2 -translate-y-1/2 border-r border-gray-200 px-3.5 py-3 text-gray-500 dark:border-gray-800 dark:text-gray-400">
                         <EnvelopeIcon className="size-6" />
@@ -104,7 +109,7 @@ export default function PurchaseOrderForm() {
                     <Select
                       options={allCustomers}
                       placeholder="Select Item"
-                      onChange={handleSelectChange}
+                      onChange={selectCustomerHandel}
                       className="dark:bg-dark-900"
                     />
                   </div>
