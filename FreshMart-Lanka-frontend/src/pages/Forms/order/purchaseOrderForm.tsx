@@ -10,12 +10,23 @@ import OrderSelectItemsTable from "../../../components/tables/BasicTables/OrderS
 import Radio from "../../../components/form/input/Radio.tsx";
 import {useEffect, useState} from "react";
 import {getAllCustomers} from "../../../services/customer/customerServices.ts";
+import {getAllItems} from "../../../services/item/itemServices.ts";
 
 export default function PurchaseOrderForm() {
 
 
+  const [selectedValue, setSelectedValue] = useState<string>("option2");
+
   const [allCustomers, setAllCustomers] = useState([]);
+  const [allItems, setAllItems] = useState([])
+
+
   const [selectCustomer, setSelectCustomer] = useState<any>({})
+  const [selectItem, setSelectItem] = useState<any>({})
+  const [buyItemQty, setBuyItemQty] = useState<any>()
+
+  const [cartInItems, setCartInItems] = useState<any[]>([])
+
 
   const allCustomerGetHandel = async () => {
     const res = await getAllCustomers();
@@ -29,20 +40,86 @@ export default function PurchaseOrderForm() {
     }
   };
 
-  useEffect(() => {
-    allCustomerGetHandel()
-  }, []);
+  const allItemsGetHandel = async () => {
+    const res = await getAllItems();
 
+    if (res.status === 'SUCCESS') {
+      const formattedItems = res.data.map((item: any) => ({
+        value: JSON.stringify(item),
+        label: item.itemDescription,
+      }));
+      setAllItems(formattedItems);
+    }
+  };
 
   const selectCustomerHandel = (value: string) => {
     setSelectCustomer(JSON.parse(value));
   };
 
-  const [selectedValue, setSelectedValue] = useState<string>("option2");
+  const selectItemHandel = (value: string) => {
+    setSelectItem(JSON.parse(value));
+  };
+
 
   const handleRadioChange = (value: string) => {
     setSelectedValue(value);
   };
+
+
+  const addCartHandel = () => {
+
+    const cart = {
+      itemImage: "",
+      itemId: "",
+      itemDescription: "",
+      itemPrice: "",
+      buyQty: ""
+    }
+
+    if (buyItemQty < selectItem.itemQuantity) {
+      cart.itemImage = selectItem.itemImageUrl
+      cart.itemId = selectItem._id
+      cart.itemDescription = selectItem.itemDescription
+      cart.itemPrice = selectItem.itemPrice
+      cart.buyQty = buyItemQty
+
+      if(cartInItems.length === 0) {
+        setCartInItems([...cartInItems,cart])
+      } else {
+
+        cartInItems.map((item) => {
+          if (item.itemId === cart.itemId) {
+            setCartInItems((prevItems) =>
+              prevItems.map((existingItem) =>
+                existingItem.itemId === cart.itemId
+                  ? { ...existingItem, buyQty: buyItemQty } // Update buyQty
+                  : existingItem
+              )
+            );
+          } else {
+            setCartInItems((prevItems) => [...prevItems, cart]); // Add new item if no match
+          }
+          
+        })
+    
+      }
+      
+  
+    } else {
+      alert("no item qty availble")
+    }
+
+  }
+
+
+  useEffect(() => {
+    console.log(cartInItems)
+  }, [cartInItems]);
+
+  useEffect(() => {
+    allCustomerGetHandel()
+    allItemsGetHandel()
+  }, []);
 
   return (
     <>
@@ -71,12 +148,12 @@ export default function PurchaseOrderForm() {
 
                   <div>
                     <Label htmlFor="input">Customer Code</Label>
-                    <Input type="text" id="input"  value={selectCustomer._id}/>
+                    <Input type="text" id="input" disabled value={selectCustomer._id}/>
                   </div>
 
                   <div>
                     <Label htmlFor="input">Customer Address</Label>
-                    <Input type="text" id="input" value={selectCustomer.customerAddress}/>
+                    <Input type="text" id="input" disabled value={selectCustomer.customerAddress}/>
                   </div>
 
                   <div>
@@ -86,6 +163,7 @@ export default function PurchaseOrderForm() {
                         placeholder="info@gmail.com"
                         type="text"
                         className="pl-[62px]"
+                        disabled
                         value={selectCustomer.customerEmail}
                       />
                       <span className="absolute left-0 top-1/2 -translate-y-1/2 border-r border-gray-200 px-3.5 py-3 text-gray-500 dark:border-gray-800 dark:text-gray-400">
@@ -107,26 +185,26 @@ export default function PurchaseOrderForm() {
                   <div>
                     <Label>Select Item</Label>
                     <Select
-                      options={allCustomers}
+                      options={allItems}
                       placeholder="Select Item"
-                      onChange={selectCustomerHandel}
+                      onChange={selectItemHandel}
                       className="dark:bg-dark-900"
                     />
                   </div>
 
                   <div>
-                    <Label htmlFor="input">Item Description</Label>
-                    <Input type="text" id="input" />
+                    <Label htmlFor="input">Item Code</Label>
+                    <Input type="text" id="input" disabled value={selectItem.itemCode}/>
                   </div>
 
                   <div>
                     <Label htmlFor="input">Item Price</Label>
-                    <Input type="text" id="input" />
+                    <Input type="text" id="input" disabled value={selectItem.itemPrice}/>
                   </div>
 
                   <div>
                     <Label htmlFor="input">Item Quantity</Label>
-                    <Input type="email" id="input" />
+                    <Input type="email" id="input" onChange={(e)=> setBuyItemQty(e.target.value)}/>
                   </div>
                 </div>
 
@@ -135,6 +213,7 @@ export default function PurchaseOrderForm() {
                   <Button
                     size="sm"
                     variant="success"
+                    onClick={() => addCartHandel()}
                     startIcon={<BoxIconLine className="size-5" />}
                   >
                     Add Cart
@@ -148,7 +227,7 @@ export default function PurchaseOrderForm() {
           <div className="space-y-6">
             <ComponentCard title="Cart">
               <div className="space-y-6">
-                <OrderSelectItemsTable />
+                <OrderSelectItemsTable cart={cartInItems}/>
               </div>
             </ComponentCard>
           </div>

@@ -34,7 +34,7 @@ export const tableData : Customer[] = [
   }
 ];
 
-export default function OrderSelectItemsTable() {
+export default function OrderSelectItemsTable(props:any) {
   return (
     <div className="overflow-hidden rounded-xl border border-gray-200 bg-white dark:border-white/[0.05] dark:bg-white/[0.03]">
       <div className="max-w-full overflow-x-auto">
@@ -79,19 +79,28 @@ export default function OrderSelectItemsTable() {
 
             {/* Table Body */}
             <TableBody className="divide-y divide-gray-100 dark:divide-white/[0.05]">
-              {tableData.map((order) => (
+              {props.cart.map((order:any) => (
                 <TableRow key={order.id}>
                   <TableCell className="px-4 py-3 text-center text-gray-500 text-theme-sm dark:text-gray-400">
-                    {order.itemImage}
+                  <div className="flex items-center justify-center gap-3">
+                          <div className="w-10 h-10 overflow-hidden  flex items-center justify-center">
+                            <img
+                                width={40}
+                                height={40}
+                                src={order.itemImage || ""}
+                                className="object-cover"
+                            />
+                          </div>
+                        </div>
                   </TableCell>
                   <TableCell className="px-4 py-3 text-gray-500 text-center text-theme-sm dark:text-gray-400">
                     {order.itemDescription}
                   </TableCell>
                   <TableCell className="px-4 py-3 text-gray-500 text-center text-theme-sm dark:text-gray-400">
-                    {order.itemUnitPrice}
+                    {order.itemPrice}
                   </TableCell>
                   <TableCell className="px-4 py-3 text-gray-500 text-center text-theme-sm dark:text-gray-400">
-                    {order.itemQuantity}
+                    {order.buyQty}
                   </TableCell>
                   <TableCell className="px-4 py-3 text-gray-500 text-center text-theme-sm dark:text-gray-400">
                     <div className="flex items-center justify-center gap-2">
