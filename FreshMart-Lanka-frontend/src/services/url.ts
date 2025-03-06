@@ -19,6 +19,7 @@ export const DELETE_CUSTOMER_URL = "/customer/delete/"
 
 //---------------ORDERS
 export const ALL_ORDERS_GET_URL = "/order/all"
+export const PARCHES_NEW_ORDER_URL = "/order/purchase"
 
 //---------FILES
 export const UPLOAD_IMAGE_URL = "/image/upload"

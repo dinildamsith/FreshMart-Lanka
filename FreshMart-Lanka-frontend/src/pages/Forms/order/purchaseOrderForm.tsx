@@ -11,6 +11,7 @@ import Radio from "../../../components/form/input/Radio.tsx";
 import {useEffect, useState} from "react";
 import {getAllCustomers} from "../../../services/customer/customerServices.ts";
 import {getAllItems} from "../../../services/item/itemServices.ts";
+import {parchesNewOrder} from "../../../services/order/orderServices.ts";
 
 export default function PurchaseOrderForm() {
 
@@ -26,7 +27,7 @@ export default function PurchaseOrderForm() {
   const [buyItemQty, setBuyItemQty] = useState<any>()
 
   const [cartInItems, setCartInItems] = useState<any[]>([])
-
+  const [orderTotal, setOrderTotal] = useState<number>(0)
 
   const allCustomerGetHandel = async () => {
     const res = await getAllCustomers();
@@ -53,6 +54,7 @@ export default function PurchaseOrderForm() {
   };
 
   const selectCustomerHandel = (value: string) => {
+    console.log(value)
     setSelectCustomer(JSON.parse(value));
   };
 
@@ -66,47 +68,39 @@ export default function PurchaseOrderForm() {
   };
 
 
+  // let tot = 0
   const addCartHandel = () => {
 
     const cart = {
       itemImage: "",
       itemId: "",
-      itemDescription: "",
+      itemName: "",
       itemPrice: "",
       buyQty: ""
     }
 
+
     if (buyItemQty < selectItem.itemQuantity) {
       cart.itemImage = selectItem.itemImageUrl
       cart.itemId = selectItem._id
-      cart.itemDescription = selectItem.itemDescription
+      cart.itemName = selectItem.itemDescription
       cart.itemPrice = selectItem.itemPrice
       cart.buyQty = buyItemQty
 
-      if(cartInItems.length === 0) {
-        setCartInItems([...cartInItems,cart])
-      } else {
 
-        cartInItems.map((item) => {
-          if (item.itemId === cart.itemId) {
-            setCartInItems((prevItems) =>
-              prevItems.map((existingItem) =>
-                existingItem.itemId === cart.itemId
-                  ? { ...existingItem, buyQty: buyItemQty } // Update buyQty
-                  : existingItem
-              )
-            );
-          } else {
-            setCartInItems((prevItems) => [...prevItems, cart]); // Add new item if no match
-          }
-          
-        })
-    
-      }
-      
-  
+      setCartInItems((prevItems) => {
+        const isExitItem =  prevItems.find((item) => item.itemId === selectItem._id)
+
+        if (isExitItem) {
+          return prevItems
+        } else {
+          return [...cartInItems,cart]
+        }
+
+      })
+
     } else {
-      alert("no item qty availble")
+      alert("This Item Quntity Not in Stock")
     }
 
   }
@@ -114,12 +108,31 @@ export default function PurchaseOrderForm() {
 
   useEffect(() => {
     console.log(cartInItems)
+    let tot = 0
+
+    cartInItems.map((item) => {
+      tot+= Number(item.buyQty) * Number(item.itemPrice)
+    })
+    setOrderTotal(tot)
+
   }, [cartInItems]);
 
   useEffect(() => {
     allCustomerGetHandel()
     allItemsGetHandel()
   }, []);
+
+
+  const newOrderData = {
+    customerId: selectCustomer._id,
+    customerName: selectCustomer.customerName,
+    orderItems: cartInItems
+  }
+
+  const newOrderPurchaseOrder = async () => {
+     const res = await parchesNewOrder(newOrderData)
+    console.log(res)
+  }
 
   return (
     <>
@@ -238,7 +251,7 @@ export default function PurchaseOrderForm() {
               <div className="space-y-6">
                 <div>
                   <Label htmlFor="input">Order Total</Label>
-                  <Input type="number" id="input" />
+                  <Input type="number" id="input" value={orderTotal}/>
                 </div>
 
                 <div className="flex flex-wrap items-center gap-8">
@@ -336,6 +349,7 @@ export default function PurchaseOrderForm() {
                       <Button
                           size="sm"
                           variant="success"
+                          onClick={ ()=> newOrderPurchaseOrder()}
                     startIcon={<BoxIconLine className="size-5" />}
                   >
                     Confirm Order
