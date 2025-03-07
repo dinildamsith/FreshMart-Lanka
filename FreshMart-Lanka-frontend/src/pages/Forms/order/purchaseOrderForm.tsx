@@ -13,13 +13,14 @@ import {getAllCustomers} from "../../../services/customer/customerServices.ts";
 import {getAllItems} from "../../../services/item/itemServices.ts";
 import {parchesNewOrder} from "../../../services/order/orderServices.ts";
 import {MyContext} from "../../../context/AppContext.tsx";
+import toast from "react-hot-toast";
 
 export default function PurchaseOrderForm() {
 
 
   const { cartInRemoveItemIndex } = useContext(MyContext)!;
 
-  const [selectedValue, setSelectedValue] = useState<string>("option2");
+  const [selectedValue, setSelectedValue] = useState<string>("cash");
 
   const [allCustomers, setAllCustomers] = useState([]);
   const [allItems, setAllItems] = useState([])
@@ -31,6 +32,15 @@ export default function PurchaseOrderForm() {
 
   const [cartInItems, setCartInItems] = useState<any[]>([])
   const [orderTotal, setOrderTotal] = useState<number>(0)
+
+
+  const [amount, setAmount] = useState<any>(null)
+  const [balance, setBalance] = useState<any>(null)
+  const [cardDetails, setCardDetails] = useState<any>({
+    cardNumber: null,
+    cvc: null,
+    ed: null
+  })
 
 
   useEffect(() => {
@@ -65,7 +75,6 @@ export default function PurchaseOrderForm() {
   };
 
   const selectCustomerHandel = (value: string) => {
-    console.log(value)
     setSelectCustomer(JSON.parse(value));
   };
 
@@ -77,6 +86,11 @@ export default function PurchaseOrderForm() {
   const handleRadioChange = (value: string) => {
     setSelectedValue(value);
   };
+
+  const handelBalance = (e:any) => {
+    setAmount(e.target.value)
+    setBalance(orderTotal - e.target.value)
+  }
 
 
   // let tot = 0
@@ -111,7 +125,7 @@ export default function PurchaseOrderForm() {
       })
 
     } else {
-      alert("This Item Quntity Not in Stock")
+      toast.error("This Item Quntity Not in Stock")
     }
 
   }
@@ -141,8 +155,29 @@ export default function PurchaseOrderForm() {
   }
 
   const newOrderPurchaseOrder = async () => {
-     const res = await parchesNewOrder(newOrderData)
-    console.log(res)
+
+    if (selectedValue == 'card') {
+
+      if (cardDetails.cardNumber != null || cardDetails.cvc != null || cardDetails.ed != null){
+        const res = await parchesNewOrder(newOrderData)
+        console.log(res)
+      } else {
+        toast.error("Please Input Card Details")
+      }
+    } else {
+
+      if (amount != null) {
+        const res = await parchesNewOrder(newOrderData)
+        console.log(res)
+      } else {
+        toast.error("Please Input Amount")
+      }
+
+    }
+
+
+
+
   }
 
   return (
@@ -295,6 +330,9 @@ export default function PurchaseOrderForm() {
                               type="text"
                               placeholder="Card number"
                               className="pl-[62px]"
+                              onChange={(e) => setCardDetails({
+                                cardNumber: e.target.value
+                              })}
                           />
                           <span
                               className="absolute left-0 top-1/2 flex h-11 w-[46px] -translate-y-1/2 items-center justify-center border-r border-gray-200 dark:border-gray-800">
@@ -327,12 +365,19 @@ export default function PurchaseOrderForm() {
 
                         <div>
                           <Label htmlFor="input">Cvc</Label>
-                          <Input type="number" id="input"/>
+                          <Input type="number" id="input"
+                                 onChange={(e) => setCardDetails({
+                            cvc: e.target.value
+                          })}/>
                         </div>
 
                         <div>
                           <Label htmlFor="input">Expire Date</Label>
-                          <Input type="date" id="input"/>
+                          <Input type="date" id="input"
+                                 onChange={(e) => setCardDetails({
+                                   ed: e.target.value
+                                 })}
+                          />
                         </div>
 
                       </div>
@@ -344,12 +389,12 @@ export default function PurchaseOrderForm() {
                           <div className={"space-y-6"}>
                           <div>
                                     <Label htmlFor="input">Amount</Label>
-                                    <Input type="number" id="input"/>
+                                    <Input type="number" id="input" onChange={(e) => handelBalance(e)}/>
                                 </div>
 
                                 <div>
                                     <Label htmlFor="input">Balance</Label>
-                                    <Input type="number" id="input"/>
+                                    <Input type="number" id="input" disabled value={balance}/>
                                 </div>
                             </div>
                         )
