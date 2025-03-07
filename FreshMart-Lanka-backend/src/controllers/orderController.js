@@ -8,6 +8,11 @@ const { verifyToken, verifyRole } = require('../config/jwtConfig');
 const router = express.Router();
 
 
+const generateOrderCode = () => {
+    return "ORD-" + Date.now(); // Example: ORD-1712345678901
+  };
+  
+
 router.post('/order/purchase', async (req, res) => {
 
        const { customerId, customerName, orderItems } = req.body;
@@ -43,6 +48,7 @@ router.post('/order/purchase', async (req, res) => {
            
             const newOrder = new OrderModel();
 
+            newOrder.orderCode = generateOrderCode()
             newOrder.customerId = customerId;
             newOrder.customerName = customerName;
             newOrder.orderItems = orderItems;
