@@ -21,6 +21,10 @@ interface AppContextType {
     //-----------------update customer code
     updateCustomerCode:string | null;
     setUpdateCustomerCode: (code: string | null) => void;
+
+    //--------------- cart in remove item index state
+    cartInRemoveItemIndex: any | null;
+    setCartInRemoveItemIndex: (index: any | null) => void;
 }
 
 export const MyContext = createContext<AppContextType | undefined>(undefined);
@@ -33,6 +37,7 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
 
     const [updateItemCode, setUpdateItemCode] = useState<string | null>(null);
     const [updateCustomerCode, setUpdateCustomerCode] = useState<string | null>(null);
+    const [cartInRemoveItemIndex, setCartInRemoveItemIndex] = useState<any | null>(null)
 
 
     return (
@@ -42,11 +47,8 @@ export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => 
                 itemDelete, setItemDelete,
                 updateItemCode, setUpdateItemCode,
                 updateCustomerCode, setUpdateCustomerCode,
-                customerDelete, setCustomerDelete
-                // oldItemImage, setOldItemImage,
-                // oldItemDesc, setOldItemDesc,
-                // oldItemPrice, setOldItemPrice,
-                // oldItemQty, setOldItemQty
+                customerDelete, setCustomerDelete,
+                cartInRemoveItemIndex, setCartInRemoveItemIndex
         }}>
             {children}
         </MyContext.Provider>

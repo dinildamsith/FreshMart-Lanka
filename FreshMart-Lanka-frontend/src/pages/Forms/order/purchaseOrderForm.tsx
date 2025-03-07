@@ -8,13 +8,16 @@ import { BoxIconLine, EnvelopeIcon } from "../../../icons";
 import Select from "../../../components/form/Select.tsx";
 import OrderSelectItemsTable from "../../../components/tables/BasicTables/OrderSelectItemsTable.tsx";
 import Radio from "../../../components/form/input/Radio.tsx";
-import {useEffect, useState} from "react";
+import {useContext, useEffect, useState} from "react";
 import {getAllCustomers} from "../../../services/customer/customerServices.ts";
 import {getAllItems} from "../../../services/item/itemServices.ts";
 import {parchesNewOrder} from "../../../services/order/orderServices.ts";
+import {MyContext} from "../../../context/AppContext.tsx";
 
 export default function PurchaseOrderForm() {
 
+
+  const { cartInRemoveItemIndex } = useContext(MyContext)!;
 
   const [selectedValue, setSelectedValue] = useState<string>("option2");
 
@@ -28,6 +31,14 @@ export default function PurchaseOrderForm() {
 
   const [cartInItems, setCartInItems] = useState<any[]>([])
   const [orderTotal, setOrderTotal] = useState<number>(0)
+
+
+  useEffect(() => {
+
+    const removeItemWithout = cartInItems.filter((_,index) => index != cartInRemoveItemIndex)
+    setCartInItems(removeItemWithout)
+
+  }, [cartInRemoveItemIndex]);
 
   const allCustomerGetHandel = async () => {
     const res = await getAllCustomers();
@@ -80,7 +91,7 @@ export default function PurchaseOrderForm() {
     }
 
 
-    if (buyItemQty < selectItem.itemQuantity) {
+    if (buyItemQty <= selectItem.itemQuantity) {
       cart.itemImage = selectItem.itemImageUrl
       cart.itemId = selectItem._id
       cart.itemName = selectItem.itemDescription

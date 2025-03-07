@@ -7,34 +7,18 @@ import {
 } from "../../ui/table";
 
 import {PencilIcon, TrashBinIcon} from "../../../icons";
+import {useContext} from "react";
+import {MyContext} from "../../../context/AppContext.tsx";
 
-interface Customer {
-  id: number;
-  itemImage: string;
-  itemDescription: string;
-  itemQuantity: number;
-  itemUnitPrice: number;
-}
-
-// Define the table data using the interface
-export const tableData : Customer[] = [
-  {
-    id: 1,
-    itemImage: "Lindsey Curtis",
-    itemDescription: "Lindsey Curtis",
-    itemQuantity: 10,
-    itemUnitPrice: 100
-  },
-  {
-    id: 2,
-    itemImage: "Kaiya George",
-    itemDescription: "Kaiya George",
-    itemQuantity: 20,
-    itemUnitPrice: 200
-  }
-];
 
 export default function OrderSelectItemsTable(props:any) {
+
+  const { setCartInRemoveItemIndex } = useContext(MyContext)!;
+
+  const handelSelectItemRemove = (id:any) => {
+      setCartInRemoveItemIndex(id)
+  }
+
   return (
     <div className="overflow-hidden rounded-xl border border-gray-200 bg-white dark:border-white/[0.05] dark:bg-white/[0.03]">
       <div className="max-w-full overflow-x-auto">
@@ -79,8 +63,8 @@ export default function OrderSelectItemsTable(props:any) {
 
             {/* Table Body */}
             <TableBody className="divide-y divide-gray-100 dark:divide-white/[0.05]">
-              {props.cart.map((order:any) => (
-                <TableRow key={order.id}>
+              {props.cart.map((order:any, index:any) => (
+                <TableRow key={index}>
                   <TableCell className="px-4 py-3 text-center text-gray-500 text-theme-sm dark:text-gray-400">
                   <div className="flex items-center justify-center gap-3">
                           <div className="w-10 h-10 overflow-hidden  flex items-center justify-center">
@@ -94,7 +78,7 @@ export default function OrderSelectItemsTable(props:any) {
                         </div>
                   </TableCell>
                   <TableCell className="px-4 py-3 text-gray-500 text-center text-theme-sm dark:text-gray-400">
-                    {order.itemDescription}
+                    {order.itemName}
                   </TableCell>
                   <TableCell className="px-4 py-3 text-gray-500 text-center text-theme-sm dark:text-gray-400">
                     {order.itemPrice}
@@ -107,7 +91,9 @@ export default function OrderSelectItemsTable(props:any) {
                       <button className="text-theme-link dark:text-theme-link-dark border border-transparent rounded p-1 hover:border-white ">
                         <PencilIcon className="w-5 h-5" />
                       </button>
-                      <button className="text-theme-link dark:text-theme-link-dark border border-transparent rounded p-1 hover:border-white ">
+                      <button
+                          onClick={()=> handelSelectItemRemove(index)}
+                          className="text-theme-link dark:text-theme-link-dark border border-transparent rounded p-1 hover:border-white ">
                         <TrashBinIcon className="w-5 h-5" />
                       </button>
                     </div>
