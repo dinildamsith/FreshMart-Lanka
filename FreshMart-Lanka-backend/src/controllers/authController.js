@@ -2,7 +2,7 @@ const express = require('express');
 const ResponseDto = require('../dto/responseDto');
 const bcrypt = require('bcryptjs');
 const UserModel = require('../models/userModel');
-const {generateToken} = require("../config/jwtConfig");
+const {generateToken, verifyToken} = require("../config/jwtConfig");
 
 
 const router = express.Router();
@@ -69,5 +69,35 @@ router.post('/auth/signin', async (req, res) => {
         res.status(500).json(new ResponseDto("INTERNAL_SERVER_ERROR", error.message));
     }
 });
+
+
+//----------------- USER Image Upload
+router.put('/user/upload/profile-pic/:email', verifyToken ,async(req, res) => {
+    
+    const { email } = req.params;
+    const { imageUrl } = req.body;
+
+    try {
+
+        const user = await UserModel.findOne({email:email})
+
+        console.log(user)
+
+        if(!user) {
+            return res.status(400).json(new ResponseDto("BAD_REQUEST", "User Not Found"));
+        }
+
+        user.userImage = imageUrl
+        await user.save()
+
+        return res.status(200).send(new ResponseDto('SUCCESS', 'User Image Upload Success...'))
+
+    } catch (error) {
+        console.log(error)
+        return res.status(400).send(new ResponseDto(400, "Error"));
+    }
+
+
+})
 
 module.exports = router;
