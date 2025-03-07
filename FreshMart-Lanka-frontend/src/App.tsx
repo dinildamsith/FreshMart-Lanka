@@ -22,7 +22,6 @@ import CustomerForm from "./pages/Forms/customer/customerForm.tsx";
 import Warehouse from "./pages/Forms/item/warehouse.tsx";
 import AllCustomers from "./pages/Forms/customer/allCustomers.tsx";
 import PurchaseOrderForm from "./pages/Forms/order/purchaseOrderForm.tsx";
-import BasicForm from "./pages/Forms/basic.tsx";
 import {Toaster} from "react-hot-toast";
 import AllOrders from "./pages/Forms/order/allOrders.tsx";
 
@@ -57,7 +56,6 @@ export default function App() {
             <Route path="/all-orders" element={<AllOrders/>} />
 
 
-            <Route path="/basic" element={<BasicForm />} />
 
             {/* Tables */}
             <Route path="/basic-tables" element={<AlItemsTable />} />
