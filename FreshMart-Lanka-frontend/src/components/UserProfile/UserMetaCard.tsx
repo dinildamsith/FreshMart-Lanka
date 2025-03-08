@@ -4,6 +4,9 @@ import Input from "../form/input/InputField.tsx";
 import Button from "../ui/button/Button.tsx";
 import {useModal} from "../../hooks/useModal.ts";
 import {useState} from "react";
+import {imageUpload} from "../../services/fileUpload/upload.ts";
+import {decodeToken} from "../../services/decodeToken.ts";
+import {profileImageUpdate} from "../../services/auth/authServices.ts";
 
 
 export default function UserMetaCard() {
@@ -15,29 +18,40 @@ export default function UserMetaCard() {
     closeModal();
   };
 
+  const token = decodeToken()
   const [isPopupOpen, setIsPopupOpen] = useState(false);
   const [image, setImage] = useState('/images/user/owner.jpg');
-  const [previewImage, setPreviewImage] = useState(image);
+  const [newUploadImageUrl, setNewUploadImageUrl] = useState(image);
 
   const handleImageClick = () => {
     setIsPopupOpen(true);
   };
 
-  const handleImageChange = (e:any) => {
+  const handleImageChange = async (e:any) => {
     const file = e.target.files[0];
     if (file) {
-      const imageUrl = URL.createObjectURL(file);
-      setPreviewImage(imageUrl);
+      const formData = new FormData()
+      formData.set("image", file)
+      const res = await imageUpload(formData)
+      setNewUploadImageUrl(res.fileURL);
     }
   };
 
-  const handleSave = () => {
-    setImage(previewImage);
+  const handleSave = async () => {
+
+    const data = {
+      userEmail: token.email,
+      imageUrl: newUploadImageUrl
+    }
+
+    const res = await profileImageUpdate(data)
+    console.log(res)
+    setImage(newUploadImageUrl);
     setIsPopupOpen(false);
   };
 
   const handleCancel = () => {
-    setPreviewImage(image);
+    setNewUploadImageUrl(image);
     setIsPopupOpen(false);
   };
 
@@ -75,9 +89,9 @@ export default function UserMetaCard() {
                         />
                       </label>
                       <div className="mt-3 flex justify-center">
-                        {previewImage && (
+                        {newUploadImageUrl && (
                             <img
-                                src={previewImage}
+                                src={newUploadImageUrl}
                                 alt="Preview"
                                 className="w-[150px] h-[150px] object-cover border rounded-full"
                             />
@@ -92,6 +106,7 @@ export default function UserMetaCard() {
                         Cancel
                       </button>
                       <button
+                          type={"button"}
                           className="px-4 py-2 bg-blue-500 text-white rounded-lg"
                           onClick={handleSave}
                       >
