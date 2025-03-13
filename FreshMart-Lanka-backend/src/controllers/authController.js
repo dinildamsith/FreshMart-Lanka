@@ -100,4 +100,28 @@ router.put('/user/upload/profile-pic/:email', verifyToken ,async(req, res) => {
 
 })
 
+//----------------- User Details Get
+router.get('/get/user/:email', verifyToken, async (req,res) => {
+
+    const { email } = req.params
+
+    try {
+
+        const user = await UserModel.findOne({email:email})
+
+        console.log(user)
+
+        if(!user) {
+            return res.status(400).json(new ResponseDto("BAD_REQUEST", "User Not Found"));
+        }
+
+        return res.status(200).send(new ResponseDto('SUCCESS', 'User Details get Success...', user))
+
+    } catch (error) {
+        console.log(error)
+        return res.status(400).send(new ResponseDto(400, "Error"));
+    }
+
+})
+
 module.exports = router;
