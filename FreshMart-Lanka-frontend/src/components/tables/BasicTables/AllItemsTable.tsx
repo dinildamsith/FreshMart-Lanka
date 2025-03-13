@@ -121,30 +121,30 @@ export default function AllItemsTable(props: any) {
                         <Badge
                             size="sm"
                             color={
-                              item.itemQuantity > 10
+                              item.itemQuantity >= 10
                                   ? "success"
                                   : item.itemQuantity === 0
                                       ? "error"
-                                      : item.itemQuantity < 5
+                                      : item.itemQuantity <= 5
                                           ? "warning"
                                           : "default"
                             }
                         >
-                          {item.itemQuantity > 10
+                          {item.itemQuantity >= 10
                               ? "Available"
                               : item.itemQuantity === 0
                                   ? "Out of stock"
-                                  : item.itemQuantity < 5
+                                  : item.itemQuantity <= 5
                                       ? "Low"
                                       : item.status}
                         </Badge>
 
                       </TableCell>
                       <TableCell className="px-4 py-3 text-gray-500 text-center text-theme-sm dark:text-gray-400">
-                        {item.itemPrice}
+                        {item.itemQuantity}
                       </TableCell>
                       <TableCell className="px-4 py-3 text-gray-500 text-center text-theme-sm dark:text-gray-400">
-                        {item.itemQuantity}
+                        {item.itemPrice}
                       </TableCell>
                       <TableCell className="px-4 py-3 text-gray-500 text-center text-theme-sm dark:text-gray-400">
                         <div className="flex items-center justify-center gap-2">
