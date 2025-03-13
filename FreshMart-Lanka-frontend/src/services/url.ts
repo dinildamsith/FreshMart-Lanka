@@ -18,6 +18,7 @@ export const GET_ALL_CUSTOMERS_URL = "/customer/all"
 export const ID_BY_CUSTOMER_GET_URL = "/customer/search/"
 export const UPDATE_CUSTOMER_URL = "/customer/update/"
 export const DELETE_CUSTOMER_URL = "/customer/delete/"
+export const GET_CUSTOMER_COUNT_URL = "/customer/count"
 
 //---------------ORDERS
 export const ALL_ORDERS_GET_URL = "/order/all"

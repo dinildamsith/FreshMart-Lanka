@@ -5,8 +5,23 @@ import MonthlyTarget from "../../components/ecommerce/MonthlyTarget";
 import RecentOrders from "../../components/ecommerce/RecentOrders";
 import DemographicCard from "../../components/ecommerce/DemographicCard";
 import PageMeta from "../../components/common/PageMeta";
+import {useEffect, useState} from "react";
+import {customerCount} from "../../services/customer/customerServices.ts";
 
 export default function Home() {
+
+  const [allCustomerCount, setAllCustomerCount] = useState<any>()
+
+  const customerCountGet = async () => {
+    const res = await customerCount()
+    setAllCustomerCount(res?.data)
+  }
+
+
+  useEffect(() => {
+    customerCountGet()
+  }, []);
+
   return (
     <>
       <PageMeta
@@ -15,7 +30,7 @@ export default function Home() {
       />
       <div className="grid grid-cols-12 gap-4 md:gap-6">
         <div className="col-span-12 space-y-6 xl:col-span-7">
-          <EcommerceMetrics />
+          <EcommerceMetrics customerCount={allCustomerCount}/>
 
           <MonthlySalesChart />
         </div>
