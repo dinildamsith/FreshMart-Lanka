@@ -5,7 +5,7 @@ import { DropdownItem } from "../ui/dropdown/DropdownItem";
 import { MoreDotIcon } from "../../icons";
 import { useState } from "react";
 
-export default function MonthlySalesChart() {
+export default function MonthlySalesChart(props:any) {
   const options: ApexOptions = {
     colors: ["#465fff"],
     chart: {
@@ -88,7 +88,7 @@ export default function MonthlySalesChart() {
   const series = [
     {
       name: "Sales",
-      data: [168, 385, 201, 298, 187, 195, 291, 110, 215, 390, 280, 112],
+      data: props?.orderCount,
     },
   ];
   const [isOpen, setIsOpen] = useState(false);
