@@ -2,6 +2,7 @@
 export const SIGN_UP_URL = "/auth/signup"
 export const SIGN_IN_URL = "/auth/signin"
 export const PROFILE_IMAGE_UPLOAD_URL = "/user/upload/profile-pic/"
+export const PROFILE_DETAILS_GET_URL = "/get/user/"
 
 
 //---------- ITEMS

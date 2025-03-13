@@ -1,5 +1,5 @@
-import {postRequest, putRequest} from "../httpServices.ts";
-import {PROFILE_IMAGE_UPLOAD_URL, SIGN_IN_URL, SIGN_UP_URL} from "../url.ts";
+import {getRequest, postRequest, putRequest} from "../httpServices.ts";
+import {PROFILE_DETAILS_GET_URL, PROFILE_IMAGE_UPLOAD_URL, SIGN_IN_URL, SIGN_UP_URL} from "../url.ts";
 
 // Define the type for the signup data
 interface SignUpData {
@@ -41,6 +41,13 @@ export const profileImageUpdate = (data: any): Promise<any> => {
         url: PROFILE_IMAGE_UPLOAD_URL + data.userEmail,
         data: data,
         contentType: 'json',
+        isAuth: true
+    })
+}
+
+export const getUser = (email: any): Promise<any> => {
+    return getRequest({
+        url: PROFILE_DETAILS_GET_URL + email,
         isAuth: true
     })
 }

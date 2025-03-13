@@ -1,8 +1,27 @@
 import PageBreadcrumb from "../components/common/PageBreadCrumb";
 import UserMetaCard from "../components/UserProfile/UserMetaCard";
 import PageMeta from "../components/common/PageMeta";
+import {useEffect, useState} from "react";
+import {getUser} from "../services/auth/authServices.ts";
+import {decodeToken} from "../services/decodeToken.ts";
 
 export default function UserProfiles() {
+
+
+    const [userDetails, setUserDetails] = useState()
+    const token = decodeToken()
+
+    const fetchProfileDetails = async () => {
+        const res = await getUser(token.email)
+        setUserDetails(res.data)
+        console.log(res.data)
+    }
+
+    useEffect(() => {
+        fetchProfileDetails()
+    }, []);
+
+
   return (
     <>
       <PageMeta
@@ -15,7 +34,7 @@ export default function UserProfiles() {
           Profile
         </h3>
         <div className="space-y-6">
-          <UserMetaCard />
+          <UserMetaCard userDeatils={userDetails}/>
           {/*<UserInfoCard />*/}
           {/*<UserAddressCard />*/}
         </div>
