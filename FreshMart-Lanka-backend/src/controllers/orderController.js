@@ -89,4 +89,52 @@ router.get('/order/all', verifyToken, verifyRole(['ADMIN','USER']) ,async (req, 
 });
 
 
+router.get('/order/all/summary', verifyToken, verifyRole(['ADMIN']), async (req, res) => {
+    try {
+
+        // const month = {
+        //     1: null,
+        //     2: null,
+        //     3: null,
+        //     4: null,
+        //     5: null,
+        //     6: null,
+        //     7: null,
+        //     8: null,
+        //     9: null,
+        //     10: null,
+        //     11: null,
+        //     12: null
+        // };
+        const month = new Array(12).fill(0); // Initialize the array with zeros
+
+
+
+        const orders = await OrderModel.find();
+
+        if (orders.length === 0) {
+            return res.status(404).send(new ResponseDto(404, "No orders found"));
+        }
+
+        for(let i = 0; i<=12; i++ ){
+            orders.filter((order) => {
+                const orderMonth = new Date(order.orderDate).getMonth() + 1
+                if(i === orderMonth) {
+                    month[i]+=1
+                }
+            })
+        }
+
+        return res.status(200).send(new ResponseDto(200, "Orders count retrieved successfully", 
+            {
+             orderTotal:  orders.length,
+             orderCount: month
+            }
+        ));
+
+    } catch (error) {
+        return res.status(500).send(new ResponseDto(500, "Error retrieving orders"));
+    }
+})
+
 module.exports = router;
