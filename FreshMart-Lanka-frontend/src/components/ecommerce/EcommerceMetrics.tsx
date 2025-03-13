@@ -43,7 +43,7 @@ export default function EcommerceMetrics(props:any) {
               Orders
             </span>
             <h4 className="mt-2 font-bold text-gray-800 text-title-sm dark:text-white/90">
-              5,359
+              {props?.ordersCount}
             </h4>
           </div>
 
