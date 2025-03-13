@@ -125,4 +125,21 @@ router.delete('/customer/delete/:id', verifyToken, verifyRole(['ADMIN']), async 
 
 });
 
+//------------- All customer count and percentage get
+router.get('/customer/count',verifyToken,verifyRole(['ADMIN']), async(req,res) => {
+    try {
+
+        const customersCount = await CustomerModel.countDocuments()
+
+        if (!customersCount){
+            return res.status(404).json(new ResponseDto("NOT_FOUND", "Customers not found"));
+        }
+
+        res.status(200).json(new ResponseDto("SUCCESS", "All customers count fetched successfully",customersCount));
+
+    } catch(error) {
+        res.status(500).json(new ResponseDto("INTERNAL_SERVER_ERROR", error.message));
+    }
+})
+
 module.exports = router;
