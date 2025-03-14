@@ -1,13 +1,18 @@
-import EcommerceMetrics from "../../components/ecommerce/EcommerceMetrics";
-import MonthlySalesChart from "../../components/ecommerce/MonthlySalesChart";
+import EcommerceMetricsComponent from "../../components/ecommerce/EcommerceMetrics";
+import MonthlySalesChartComponent from "../../components/ecommerce/MonthlySalesChart";
 import StatisticsChart from "../../components/ecommerce/StatisticsChart";
-import MonthlyTarget from "../../components/ecommerce/MonthlyTarget";
+import MonthlyTargetComponent from "../../components/ecommerce/MonthlyTarget";
 import RecentOrders from "../../components/ecommerce/RecentOrders";
 import DemographicCard from "../../components/ecommerce/DemographicCard";
 import PageMeta from "../../components/common/PageMeta";
-import {useEffect, useState} from "react";
+import {memo, useEffect, useState} from "react";
 import {customerCount} from "../../services/customer/customerServices.ts";
 import {allOrdersSummaryGet} from "../../services/order/orderServices.ts";
+
+
+const EcommerceMetrics = memo(EcommerceMetricsComponent)
+const MonthlyTarget = memo(MonthlyTargetComponent);
+const MonthlySalesChart = memo(MonthlySalesChartComponent)
 
 export default function Home() {
 
@@ -18,6 +23,7 @@ export default function Home() {
     const res = await customerCount()
     setAllCustomerCount(res?.data)
   }
+
 
   const allOrdersSummary = async () => {
     const res = await allOrdersSummaryGet()
