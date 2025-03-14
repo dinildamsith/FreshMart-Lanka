@@ -1,5 +1,12 @@
 import {deleteRequest, getRequest, postRequest, putRequest} from "../httpServices.ts";
-import {ADD_ITEM_URL, CODE_BY_ITEM_GET_URL, DELETE_ITEM_URL, GET_ALL_ITEMS, UPDATE_ITEM_URL} from "../url.ts";
+import {
+    ADD_ITEM_URL,
+    CODE_BY_ITEM_GET_URL,
+    DELETE_ITEM_URL,
+    GET_ALL_ITEMS,
+    OUT_OF_STOCK_ITEMS_GET_URL,
+    UPDATE_ITEM_URL
+} from "../url.ts";
 
 export interface ItemData {
     itemImageUrl: any,
@@ -43,6 +50,14 @@ export const updateItem = (data: any): Promise<any> => {
         url: UPDATE_ITEM_URL + data.itemCode,
         data: data,
         contentType: "json",
+        isAuth: true
+    })
+}
+
+
+export const outOfStockItemsGet = (): Promise<any> => {
+    return getRequest({
+        url: OUT_OF_STOCK_ITEMS_GET_URL,
         isAuth: true
     })
 }

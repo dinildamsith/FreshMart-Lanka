@@ -1,13 +1,12 @@
 import EcommerceMetricsComponent from "../../components/ecommerce/EcommerceMetrics";
 import MonthlySalesChartComponent from "../../components/ecommerce/MonthlySalesChart";
-import StatisticsChart from "../../components/ecommerce/StatisticsChart";
 import MonthlyTargetComponent from "../../components/ecommerce/MonthlyTarget";
 import RecentOrders from "../../components/ecommerce/RecentOrders";
-import DemographicCard from "../../components/ecommerce/DemographicCard";
 import PageMeta from "../../components/common/PageMeta";
 import {memo, useEffect, useState} from "react";
 import {customerCount} from "../../services/customer/customerServices.ts";
 import {allOrdersSummaryGet} from "../../services/order/orderServices.ts";
+import {outOfStockItemsGet} from "../../services/item/itemServices.ts";
 
 
 const EcommerceMetrics = memo(EcommerceMetricsComponent)
@@ -18,6 +17,9 @@ export default function Home() {
 
   const [allCustomerCount, setAllCustomerCount] = useState<any>()
   const [ordersSummary, setOrderSummary] = useState<any>()
+  const [outOfStockItems, setOutOfStockItems] = useState<any>()
+
+
 
   const customerCountGet = async () => {
     const res = await customerCount()
@@ -30,10 +32,16 @@ export default function Home() {
     setOrderSummary(res?.data)
   }
 
+  const outOfStockItemsGetHandel = async () => {
+    const res = await outOfStockItemsGet()
+    setOutOfStockItems(res?.data)
+  }
+
 
   useEffect(() => {
     customerCountGet()
     allOrdersSummary()
+    outOfStockItemsGetHandel()
   }, []);
 
   return (
@@ -53,16 +61,16 @@ export default function Home() {
           <MonthlyTarget />
         </div>
 
-        <div className="col-span-12">
-          <StatisticsChart />
-        </div>
+        {/*<div className="col-span-12">*/}
+        {/*  <StatisticsChart />*/}
+        {/*</div>*/}
 
-        <div className="col-span-12 xl:col-span-5">
-          <DemographicCard />
-        </div>
+        {/*<div className="col-span-12 xl:col-span-5">*/}
+        {/*  <DemographicCard />*/}
+        {/*</div>*/}
 
         <div className="col-span-12 xl:col-span-7">
-          <RecentOrders />
+          <RecentOrders allStockOutItems={outOfStockItems}/>
         </div>
       </div>
     </>

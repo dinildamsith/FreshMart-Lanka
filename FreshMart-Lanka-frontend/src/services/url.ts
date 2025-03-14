@@ -11,6 +11,7 @@ export const ADD_ITEM_URL = "/item/save"
 export const DELETE_ITEM_URL = "/item/delete/"
 export const CODE_BY_ITEM_GET_URL ="/item/search/"
 export const UPDATE_ITEM_URL = "/item/update/"
+export const OUT_OF_STOCK_ITEMS_GET_URL = '/item/out-of-stock/all'
 
 //-------------CUSTOMERS
 export const SAVE_CUSTOMER_URL = "/customer/save"
