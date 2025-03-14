@@ -91,10 +91,10 @@ export const deleteRequest = async <T>(requestConfig: RequestConfig): Promise<Ap
 
 function handleResponse<T>(response: AxiosResponse<ApiResponse<T>>): ApiResponse<T> {
     if (response.status === 200 || response.status === 201) {
-        // toast.success(response.data.description || 'Request successful');
+        toast.success(response.data.description || 'Request successful');
         return response.data;
     } else {
-        // toast.error(response.data.description || 'Request failed');
+        toast.error(response.data.description || 'Request failed');
         console.log(response)
         throw new Error(response.data.description || 'Request failed');
     }
