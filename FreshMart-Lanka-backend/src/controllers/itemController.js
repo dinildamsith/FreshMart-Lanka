@@ -129,4 +129,16 @@ router.delete('/item/delete/:code', verifyToken, verifyRole(['ADMIN']), async (r
 });
 
 
+//------------Out of Stock Items Get
+router.get('/item/out-of-stock/all',verifyToken, verifyRole(['ADMIN','USER']), async (req, res) => {
+    try {
+
+        const outOfStockItems = await ItemModel.find({ itemQuantity: { $lte: 0 } });
+           
+        res.status(200).json(new ResponseDto("SUCCESS", "Out of stock Items", outOfStockItems));
+    } catch(error) {
+        res.status(500).json(new ResponseDto("INTERNAL_SERVER_ERROR", error.message));
+    }
+})
+
 module.exports = router;
