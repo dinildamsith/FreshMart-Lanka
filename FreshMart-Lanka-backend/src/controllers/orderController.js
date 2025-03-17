@@ -137,7 +137,7 @@ router.get('/order/all/summary', verifyToken, verifyRole(['ADMIN']), async (req,
     }
 })
 
-router.get('/most-purchased-item', async (req, res) => {
+router.get('/order/most-purchased-item', verifyToken, verifyRole(['ADMIN','USER']) , async (req, res) => {
     try {
         // Aggregate orderItems to find the most purchased item
         const mostPurchasedItem = await OrderModel.aggregate([
