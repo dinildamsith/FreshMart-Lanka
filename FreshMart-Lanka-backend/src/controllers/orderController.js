@@ -137,4 +137,46 @@ router.get('/order/all/summary', verifyToken, verifyRole(['ADMIN']), async (req,
     }
 })
 
+router.get('/most-purchased-item', async (req, res) => {
+    try {
+        // Aggregate orderItems to find the most purchased item
+        const mostPurchasedItem = await OrderModel.aggregate([
+            { $unwind: "$orderItems" }, // Flatten orderItems array
+            {
+                $group: {
+                    _id: "$orderItems.itemId",
+                    totalPurchased: { $sum: "$orderItems.buyQty" }
+                }
+            },
+            { $sort: { totalPurchased: -1 } }, // Sort by purchase count (descending)
+            { $limit: 1 } // Get the top one
+        ]);
+
+        if (mostPurchasedItem.length === 0) {
+            return res.status(404).json({ message: "No items found in orders." });
+        }
+
+        const itemCode = mostPurchasedItem[0]._id;
+
+        console.log(itemCode)
+        // Fetch item details from Item collection
+        const itemDetails = await ItemModel.findOne({ _id: itemCode });
+
+        if (!itemDetails) {
+            return res.status(404).json({ message: "Item details not found." });
+        }
+
+        res.json({
+            itemCode: itemDetails.itemCode,
+            itemImageUrl: itemDetails.itemImageUrl,
+            itemDescription: itemDetails.itemDescription,
+            itemPrice: itemDetails.itemPrice,
+            totalPurchased: mostPurchasedItem[0].totalPurchased
+        });
+
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+});
+
 module.exports = router;
