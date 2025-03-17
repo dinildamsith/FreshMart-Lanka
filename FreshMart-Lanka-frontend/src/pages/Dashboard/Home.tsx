@@ -4,7 +4,7 @@ import OutOfStock from "../../components/ecommerce/OutOfStock.tsx";
 import PageMeta from "../../components/common/PageMeta";
 import {memo, useEffect, useState} from "react";
 import {customerCount} from "../../services/customer/customerServices.ts";
-import {allOrdersSummaryGet} from "../../services/order/orderServices.ts";
+import {allOrdersSummaryGet, mostBuyItemGet} from "../../services/order/orderServices.ts";
 import {outOfStockItemsGet} from "../../services/item/itemServices.ts";
 
 
@@ -18,6 +18,7 @@ export default function Home() {
   const [allCustomerCount, setAllCustomerCount] = useState<any>()
   const [ordersSummary, setOrderSummary] = useState<any>()
   const [outOfStockItems, setOutOfStockItems] = useState<any>()
+  const [mostSaleItemDetails, setMostSaleItemDetails] = useState<any>()
 
 
 
@@ -37,11 +38,16 @@ export default function Home() {
     setOutOfStockItems(res?.data)
   }
 
+  const mostBuyItemGetHandel =  async  () => {
+    const res =  await mostBuyItemGet()
+    setMostSaleItemDetails(res)
+  }
 
   useEffect(() => {
     customerCountGet()
     allOrdersSummary()
     outOfStockItemsGetHandel()
+    mostBuyItemGetHandel()
   }, []);
 
   return (
@@ -65,7 +71,7 @@ export default function Home() {
                 Most Sale Item
               </h3>
               <img
-                  src="https://mdfood.lk/wp-content/uploads/2020/05/jam-sfl.jpg"
+                  src={mostSaleItemDetails?.itemImageUrl}
                   alt=""
                   className="mt-4 w-[340px] mx-auto"
               />

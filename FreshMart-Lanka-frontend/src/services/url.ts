@@ -25,6 +25,7 @@ export const GET_CUSTOMER_COUNT_URL = "/customer/count"
 export const ALL_ORDERS_GET_URL = "/order/all"
 export const PARCHES_NEW_ORDER_URL = "/order/purchase"
 export const ALL_ORDERS_SUMMARY_GET_URL = "/order/all/summary"
+export const MOST_BUY_ITEM_GET_URL = "/order/most-purchased-item"
 
 //---------FILES
 export const UPLOAD_IMAGE_URL = "/image/upload"
